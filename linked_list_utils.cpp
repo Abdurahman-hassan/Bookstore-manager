@@ -27,3 +27,9 @@ template <typename L>
 bool List<L>::atFirst() const {
     return cursor == head;
 }
+
+template <typename L>
+void List<L>::advance() {
+    prev = cursor;
+    cursor = cursor->next;
+}

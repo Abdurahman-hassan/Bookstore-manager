@@ -14,6 +14,7 @@ public:
     bool currsorIsEmpty() const;
     void toFirst();
     bool atFirst() const;
+    void advance();
 
 
 
