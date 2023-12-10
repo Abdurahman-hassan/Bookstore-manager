@@ -43,6 +43,7 @@ public:
 // =========== Utils functions ===========
     bool search(const int &);
     void orderInsert(const int &, const L &);
+    void traverse();
 
 
 

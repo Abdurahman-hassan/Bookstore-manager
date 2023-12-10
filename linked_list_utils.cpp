@@ -193,3 +193,12 @@ void List<L>::orderInsert(const int &k, const L &d) {
     else
         insertBefore(k, d);
 }
+
+template <typename L>
+void List<L>::traverse() {
+    toFirst();
+    while (!currsorIsEmpty()) {
+        cout << cursor->key << " " << cursor->data << endl;
+        advance();
+    }
+}
