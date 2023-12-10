@@ -38,7 +38,7 @@ public:
     void deleteNode();
     void deleteFirst();
     void deleteEnd();
-
+    void makeListEmpty();
 
 
 

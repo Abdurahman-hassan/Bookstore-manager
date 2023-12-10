@@ -162,3 +162,10 @@ void List<L>::deleteEnd() {
         deleteNode();
     }
 }
+
+template <typename L>
+void List<L>::makeListEmpty() {
+    toFirst();
+    while (!isEmpty())
+        deleteNode();
+}
