@@ -12,6 +12,7 @@ public:
     List();
     bool isEmpty() const;
     bool currsorIsEmpty() const;
+    void toFirst();
 
 
 private:

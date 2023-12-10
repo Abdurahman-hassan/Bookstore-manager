@@ -16,3 +16,9 @@ template <typename L>
 bool List<L>::currsorIsEmpty() const {
     return cursor == NULL;
 }
+
+template <typename L>
+void List<L>::toFirst() {
+    cursor = head;
+    prev = NULL;
+}
