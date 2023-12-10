@@ -202,3 +202,8 @@ void List<L>::traverse() {
         advance();
     }
 }
+
+template <typename L>
+List<L>::~List() {
+    makeListEmpty();
+}

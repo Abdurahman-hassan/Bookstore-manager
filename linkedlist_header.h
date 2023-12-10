@@ -9,7 +9,10 @@ template <class L>
 class List
 {
 public:
+
+// =========== Constructor and Destructor ===========
     List();
+    ~List();
 
 // =========== checker functions ===========
     bool isEmpty() const;
@@ -25,8 +28,6 @@ public:
 // =========== Retrieval functions ===========
     void retrieveData(L &, int &) const;
     void retrieveKey(int &) const;
-    void updateData(const L &);
-    int listSize() const;
 
 // =========== Insertion functions ===========
     void insertFirst(const int &, const L &);
@@ -44,6 +45,9 @@ public:
     bool search(const int &);
     void orderInsert(const int &, const L &);
     void traverse();
+    int listSize() const;
+    void updateData(const L &);
+
 
 
 
