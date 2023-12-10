@@ -17,6 +17,7 @@ public:
     void advance();
     void toEnd();
     bool atEnd() const;
+    void retrieveData(L &, int &) const;
 
 
 
