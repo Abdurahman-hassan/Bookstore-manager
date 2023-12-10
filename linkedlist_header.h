@@ -13,6 +13,8 @@ public:
     bool isEmpty() const;
     bool currsorIsEmpty() const;
     void toFirst();
+    bool atFirst() const;
+
 
 
 private:

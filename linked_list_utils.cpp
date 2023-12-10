@@ -22,3 +22,8 @@ void List<L>::toFirst() {
     cursor = head;
     prev = NULL;
 }
+
+template <typename L>
+bool List<L>::atFirst() const {
+    return cursor == head;
+}
