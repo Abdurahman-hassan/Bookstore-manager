@@ -34,6 +34,9 @@ public:
     void insertBefore(const int &, const L &);
     void insertEnd(const int &, const L &);
 
+// =========== Deletion functions ===========
+    void deleteNode();
+
 
 
 

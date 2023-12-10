@@ -127,3 +127,22 @@ void List<L>::insertEnd(const int &k, const L &d) {
         insertAfter(k, d);
     }
 }
+
+template <typename L>
+void List<L>::deleteNode() {
+    Node* temp;
+
+    if (!currsorIsEmpty()){
+        if (atFirst()) {
+            temp = cursor;
+            cursor = cursor->next;
+            head = cursor;
+            delete temp;
+        } else {
+            temp = cursor;
+            cursor = cursor->next;
+            prev->next = cursor;
+            delete temp;
+        }
+    }
+}
