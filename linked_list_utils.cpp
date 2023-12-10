@@ -169,3 +169,16 @@ void List<L>::makeListEmpty() {
     while (!isEmpty())
         deleteNode();
 }
+
+template <typename L>
+bool List<L>::search(const int &k) {
+    bool found = false;
+    toFirst();
+    while (!found && cursor != nullptr) {
+        if (cursor->key == k)
+            found = true;
+        else
+            advance();
+    }
+    return found;
+}

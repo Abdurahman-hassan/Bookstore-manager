@@ -40,6 +40,9 @@ public:
     void deleteEnd();
     void makeListEmpty();
 
+// =========== Utils functions ===========
+    bool search(const int &);
+
 
 
 
