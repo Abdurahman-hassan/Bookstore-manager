@@ -10,17 +10,26 @@ class List
 {
 public:
     List();
+
+// =========== checker functions ===========
     bool isEmpty() const;
     bool currsorIsEmpty() const;
-    void toFirst();
     bool atFirst() const;
-    void advance();
-    void toEnd();
     bool atEnd() const;
+
+// =========== Movement functions ===========
+    void toFirst();
+    void toEnd();
+    void advance();
+
+// =========== Retrieval functions ===========
     void retrieveData(L &, int &) const;
     void retrieveKey(int &) const;
     void updateData(const L &);
     int listSize() const;
+
+// =========== Insertion functions ===========
+    void insertFirst(const int &, const L &);
 
 
 

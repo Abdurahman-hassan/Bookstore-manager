@@ -2,25 +2,25 @@
 
 template <class L>
 List<L>::List() {
-    head = NULL;
-    cursor = NULL;
-    prev = NULL;
+    head = nullptr;
+    cursor = nullptr;
+    prev = nullptr;
 }
 
 template <typename L>
 bool List<L>::isEmpty() const {
-    return head == NULL;
+    return head == nullptr;
 }
 
 template <typename L>
 bool List<L>::currsorIsEmpty() const {
-    return cursor == NULL;
+    return cursor == nullptr;
 }
 
 template <typename L>
 void List<L>::toFirst() {
     cursor = head;
-    prev = NULL;
+    prev = nullptr;
 }
 
 template <typename L>
@@ -38,7 +38,7 @@ template <typename L>
 void List<L>::toEnd() {
     toFirst();
     if (!isEmpty()) {
-        while (cursor->next != NULL)
+        while (cursor->next != nullptr)
             advance();
     }
 }
@@ -50,7 +50,7 @@ bool List<L>::atEnd() const {
     else if (currsorIsEmpty())
         return false;
     else
-        return cursor->next == NULL;
+        return cursor->next == nullptr;
 }
 
 template <typename L>
@@ -78,4 +78,15 @@ int List<L>::listSize() const {
         temp = temp->next;
     }
     return count;
+}
+
+template <typename L>
+void List<L>::insertFirst(const int &k, const L &d) {
+    Node* temp = new Node;
+    temp->key = k;
+    temp->data = d;
+    temp->next = head;
+    head = temp;
+    cursor = head;
+    prev = nullptr;
 }
