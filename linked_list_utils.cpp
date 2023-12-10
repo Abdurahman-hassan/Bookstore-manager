@@ -85,7 +85,9 @@ void List<L>::insertFirst(const int &k, const L &d) {
     Node* temp = new Node;
     temp->key = k;
     temp->data = d;
+
     temp->next = head;
+
     head = temp;
     cursor = head;
     prev = nullptr;
@@ -96,8 +98,22 @@ void List<L>::insertAfter(const int &k, const L &d) {
     Node* temp = new Node;
     temp->key = k;
     temp->data = d;
+
     temp->next = cursor->next;
     cursor->next = temp;
+
     prev = cursor;
+    cursor = temp;
+}
+
+template <typename L>
+void List<L>::insertBefore(const int &k, const L &d) {
+    Node* temp = new Node;
+    temp->key = k;
+    temp->data = d;
+
+    temp->next = cursor;
+    prev->next = temp;
+
     cursor = temp;
 }
