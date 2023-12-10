@@ -52,3 +52,11 @@ bool List<L>::atEnd() const {
     else
         return cursor->next == NULL;
 }
+
+template <typename L>
+void List<L>::retrieveData(L &d, int &k) const {
+    if (!currsorIsEmpty()) {
+        d = cursor->data;
+        k = cursor->key;
+    }
+}
