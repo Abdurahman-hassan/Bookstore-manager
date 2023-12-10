@@ -10,6 +10,7 @@ class List
 {
 public:
     List();
+    bool isEmpty() const;
 
 private:
     class Node

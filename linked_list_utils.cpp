@@ -6,3 +6,8 @@ List<L>::List() {
     cursor = NULL;
     prev = NULL;
 }
+
+template <typename L>
+bool List<L>::isEmpty() const {
+    return head == NULL;
+}
