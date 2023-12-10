@@ -55,14 +55,16 @@ bool List<L>::atEnd() const {
 
 template <typename L>
 void List<L>::retrieveData(L &d, int &k) const {
-    if (!currsorIsEmpty()) {
         d = cursor->data;
         k = cursor->key;
-    }
 }
 
 template <typename L>
 void List<L>::retrieveKey(int &k) const {
-    if (!currsorIsEmpty())
-        k = cursor->key;
+     k = cursor->key;
+}
+
+template <typename L>
+void List<L>::updateData(const L &d) {
+     cursor->data = d;
 }

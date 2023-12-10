@@ -19,6 +19,8 @@ public:
     bool atEnd() const;
     void retrieveData(L &, int &) const;
     void retrieveKey(int &) const;
+    void updateData(const L &);
+
 
 
 
