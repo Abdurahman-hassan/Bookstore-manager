@@ -146,3 +146,11 @@ void List<L>::deleteNode() {
         }
     }
 }
+
+template <typename L>
+void List<L>::deleteFirst() {
+    if (!isEmpty()) {
+        toFirst();
+        deleteNode();
+    }
+}

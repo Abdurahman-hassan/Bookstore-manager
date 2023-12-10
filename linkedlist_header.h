@@ -36,6 +36,7 @@ public:
 
 // =========== Deletion functions ===========
     void deleteNode();
+    void deleteFirst();
 
 
 
