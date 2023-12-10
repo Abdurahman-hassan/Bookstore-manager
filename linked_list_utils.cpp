@@ -68,3 +68,14 @@ template <typename L>
 void List<L>::updateData(const L &d) {
      cursor->data = d;
 }
+
+template <typename L>
+int List<L>::listSize() const {
+    int count = 0;
+    Node* temp = head;
+    while (temp != nullptr) {
+        count++;
+        temp = temp->next;
+    }
+    return count;
+}

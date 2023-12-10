@@ -20,6 +20,7 @@ public:
     void retrieveData(L &, int &) const;
     void retrieveKey(int &) const;
     void updateData(const L &);
+    int listSize() const;
 
 
 
