@@ -182,3 +182,14 @@ bool List<L>::search(const int &k) {
     }
     return found;
 }
+
+template <typename L>
+void List<L>::orderInsert(const int &k, const L &d) {
+    toFirst();
+    while (cursor != nullptr && cursor->key < k)
+        advance();
+    if (prev == nullptr)
+        insertFirst(k, d);
+    else
+        insertBefore(k, d);
+}
