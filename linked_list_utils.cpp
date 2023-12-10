@@ -60,3 +60,9 @@ void List<L>::retrieveData(L &d, int &k) const {
         k = cursor->key;
     }
 }
+
+template <typename L>
+void List<L>::retrieveKey(int &k) const {
+    if (!currsorIsEmpty())
+        k = cursor->key;
+}

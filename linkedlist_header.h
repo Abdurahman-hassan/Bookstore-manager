@@ -18,6 +18,7 @@ public:
     void toEnd();
     bool atEnd() const;
     void retrieveData(L &, int &) const;
+    void retrieveKey(int &) const;
 
 
 
