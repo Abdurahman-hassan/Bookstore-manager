@@ -117,3 +117,13 @@ void List<L>::insertBefore(const int &k, const L &d) {
 
     cursor = temp;
 }
+
+template <typename L>
+void List<L>::insertEnd(const int &k, const L &d) {
+    if (isEmpty())
+        insertFirst(k, d);
+    else {
+        toEnd();
+        insertAfter(k, d);
+    }
+}
