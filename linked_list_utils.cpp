@@ -42,3 +42,13 @@ void List<L>::toEnd() {
             advance();
     }
 }
+
+template <typename L>
+bool List<L>::atEnd() const {
+    if (isEmpty())
+        return true;
+    else if (currsorIsEmpty())
+        return false;
+    else
+        return cursor->next == NULL;
+}

@@ -16,6 +16,7 @@ public:
     bool atFirst() const;
     void advance();
     void toEnd();
+    bool atEnd() const;
 
 
 
