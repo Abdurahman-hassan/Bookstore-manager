@@ -48,10 +48,6 @@ public:
     int listSize() const;
     void updateData(const L &);
 
-
-
-
-
 private:
     class Node
     {
