@@ -30,6 +30,7 @@ public:
 
 // =========== Insertion functions ===========
     void insertFirst(const int &, const L &);
+    void insertAfter(const int &, const L &);
 
 
 
