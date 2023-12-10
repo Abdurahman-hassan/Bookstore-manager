@@ -11,6 +11,8 @@ class List
 public:
     List();
     bool isEmpty() const;
+    bool currsorIsEmpty() const;
+
 
 private:
     class Node
