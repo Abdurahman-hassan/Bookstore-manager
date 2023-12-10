@@ -207,3 +207,6 @@ template <typename L>
 List<L>::~List() {
     makeListEmpty();
 }
+
+template class List<int>;
+template class List<char>;
