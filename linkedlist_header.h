@@ -15,6 +15,7 @@ public:
     void toFirst();
     bool atFirst() const;
     void advance();
+    void toEnd();
 
 
 

@@ -33,3 +33,12 @@ void List<L>::advance() {
     prev = cursor;
     cursor = cursor->next;
 }
+
+template <typename L>
+void List<L>::toEnd() {
+    toFirst();
+    if (!isEmpty()) {
+        while (cursor->next != NULL)
+            advance();
+    }
+}
