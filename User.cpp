@@ -7,7 +7,7 @@ using std::string;
 
 User::User()
 {
-	
+
 }
 
 User::~User()
@@ -28,14 +28,16 @@ void User::display()
 			cin >> chose;
 		}
 
-	    if (chose == 1)
+		if (chose == 1)
 		{
 			cout << "Enter Username: ";
 			cin >> username;
 			cout << "Enter Password: ";
 			cin >> password;
 
-			bool found = false;
+			bool found = serach(username, password);
+			if (!found)
+				cout << "Not Found";
 
 		}
 
@@ -49,8 +51,8 @@ void User::display()
 			cout << "Enter Password: ";
 			cin >> password;
 		}
-		
-	} while (chose > 2 || chose <0);
+
+	} while (chose > 2 || chose < 0);
 
 
 }
@@ -102,9 +104,9 @@ int User::size()
 }
 
 
-void User::loadData() 
+void User::loadData()
 {
-	
+
 }
 
-template class GenericList<int>;
+template class GenericList<UserData>;

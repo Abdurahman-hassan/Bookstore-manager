@@ -11,7 +11,7 @@ int main()
 
 
     // Create a List of integers
-    GenericList<int> myList;
+    GenericList<char> myList;
 
     // Check if the list is empty
     if (myList.isEmpty()) {

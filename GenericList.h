@@ -57,6 +57,7 @@ private:
         L data;
         Node* next;
     };
+
     Node* head, * cursor, * prev;
 };
 

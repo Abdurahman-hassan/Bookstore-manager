@@ -205,7 +205,7 @@ template <typename L>
 void GenericList<L>::traverse() {
     toFirst();
     while (!currsorIsEmpty()) {
-        cout << cursor->key << " " << cursor->data << endl;
+        cout << cursor->key; //<< " " << cursor->data << endl;
         advance();
     }
 }
@@ -216,3 +216,5 @@ GenericList<L>::~GenericList() {
 }
 
 template class GenericList<int>;
+template class GenericList<char>;
+template class GenericList<UserData>;
