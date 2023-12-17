@@ -1,10 +1,17 @@
-#include "linkedlist_header.h"
+#include<iostream>
+#include <string>
+#include <fstream>
+#include "User.h"
 using namespace std;
-// using std::string;
 
-int main() {
+int main()
+{
+    User usr;
+    usr.display();
+
+
     // Create a List of integers
-    List<int> myList;
+    GenericList<int> myList;
 
     // Check if the list is empty
     if (myList.isEmpty()) {
@@ -24,7 +31,8 @@ int main() {
     int keyToSearch = 2;
     if (myList.search(keyToSearch)) {
         cout << "Found key: " << keyToSearch << endl;
-    } else {
+    }
+    else {
         cout << "Key not found: " << keyToSearch << endl;
     }
 
@@ -35,5 +43,33 @@ int main() {
     cout << "Traversing the list after deletion:" << endl;
     myList.traverse();
 
-    return 0;
+	return 0;
+}
+
+void readFile() 
+{
+
+    ifstream ip("user.csv");
+
+    if (!ip.is_open()) std::cout << "ERROR: File Open" << '\n';
+
+    string firstname;
+    string lastname;
+    string age;
+    string weight;
+
+    while (ip.good()) {
+
+        getline(ip, firstname, ',');
+        getline(ip, lastname, ',');
+        getline(ip, age, ',');
+        getline(ip, weight, '\n');
+
+        std::cout << "Name: " << firstname << " " << lastname << '\n';
+        std::cout << "Age: " << age << '\n';
+        std::cout << "Weight: " << weight << '\n';
+        std::cout << "-------------------" << '\n';
+    }
+
+    ip.close();
 }
