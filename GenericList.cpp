@@ -1,5 +1,6 @@
 #include "GenericList.h"
 #include "User.h"
+#include "Book.h"
 
 template <class L>
 GenericList<L>::GenericList() {
@@ -218,3 +219,4 @@ GenericList<L>::~GenericList() {
 template class GenericList<int>;
 template class GenericList<char>;
 template class GenericList<UserData>;
+template class GenericList<BookData>;

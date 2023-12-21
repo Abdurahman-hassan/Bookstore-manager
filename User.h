@@ -19,13 +19,13 @@ public:
 	User();
 	~User();
 	void insert(const string&, const string&, const string&);
-	void display();
+	void display(string&, bool&);
 	bool serach(const string&);
 	bool serach(const string&, const string&);
 	int size();
 	void loadData();
 private:
-	GenericList<int> temp;
+	GenericList<UserData> temp;
 };
 
 #endif //USER_HEADER_H

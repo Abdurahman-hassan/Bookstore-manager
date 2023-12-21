@@ -1,5 +1,4 @@
 #include <iostream>
-//#include "GenericList.h"
 #include "User.h"
 using namespace std;
 using std::string;
@@ -7,7 +6,7 @@ using std::string;
 
 User::User()
 {
-
+	insert("admin", "admin", "General Manager");
 }
 
 User::~User()
@@ -16,9 +15,10 @@ User::~User()
 }
 
 
-void User::display()
+void User::display(string& username, bool& found)
 {
-	string username, password;
+	string password;
+	char ask = 'N';
 	int chose = 0;
 	do {
 
@@ -34,10 +34,16 @@ void User::display()
 			cin >> username;
 			cout << "Enter Password: ";
 			cin >> password;
-
+			
 			bool found = serach(username, password);
 			if (!found)
-				cout << "Not Found";
+			{
+				cout << "Not Found \n";
+			    cout <<"Would you like to login again?(Y/N)"<< endl;
+				cin >> ask;
+			}
+			else
+				cout << "Welcome To Bookstore";
 
 		}
 
@@ -50,9 +56,21 @@ void User::display()
 			cin >> username;
 			cout << "Enter Password: ";
 			cin >> password;
+			bool found = serach(username);
+			if (found) {
+				cout << "This User Already Exist \n" << endl;
+				cout << "Would you like to login again?(Y/N)" << endl;
+				cin >> ask;
+			}
+			else {
+				found = true;
+				insert(username, password, name);
+				cout << "Welcome To Bookstore";
+			}
 		}
+		
 
-	} while (chose > 2 || chose < 0);
+	} while (ask != 'N' && ask != 'n');
 
 
 }
@@ -63,8 +81,9 @@ void User::insert(const string& username, const string& password, const string& 
 	UserData data;
 	data.name = name;
 	data.username = username;
+	data.password = password;
 	int key = temp.listSize() + 1;
-	//temp.orderInsert(key, data);
+	temp.insertEnd(key, data);
 }
 
 
@@ -74,7 +93,7 @@ bool User::serach(const string& username)
 	temp.toFirst();
 	while (!temp.currsorIsEmpty())
 	{
-		//temp.retrieveData(data);
+		temp.retrieveData(data);
 		if (data.username == username)
 			return true;
 
@@ -85,6 +104,11 @@ bool User::serach(const string& username)
 
 bool User::serach(const string& username, const string& password)
 {
+	if (username == "admin" && password == "admin")
+	{
+		return true;
+	}
+
 	bool found = false; UserData data;
 	temp.toFirst();
 	while (!temp.currsorIsEmpty())

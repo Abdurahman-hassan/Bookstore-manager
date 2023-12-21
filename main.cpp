@@ -7,41 +7,43 @@ using namespace std;
 int main()
 {
     User usr;
-    usr.display();
+    string username;
+    bool isLogin = false;
+    usr.display(username, isLogin);
 
 
-    // Create a List of integers
-    GenericList<char> myList;
+    //// Create a List of integers
+    //GenericList<char> myList;
 
-    // Check if the list is empty
-    if (myList.isEmpty()) {
-        cout << "The list is currently empty." << endl;
-    }
+    //// Check if the list is empty
+    //if (myList.isEmpty()) {
+    //    cout << "The list is currently empty." << endl;
+    //}
 
-    // Insert elements
-    myList.insertFirst(1, 100); // Insert at the beginning
-    myList.insertEnd(2, 200);   // Insert at the end
-    myList.insertAfter(3, 300); // Insert after the current position
+    //// Insert elements
+    //myList.insertFirst(1, 100); // Insert at the beginning
+    //myList.insertEnd(2, 200);   // Insert at the end
+    //myList.insertAfter(3, 300); // Insert after the current position
 
-    // Traverse and print the list
-    cout << "Traversing the list:" << endl;
-    myList.traverse();
+    //// Traverse and print the list
+    //cout << "Traversing the list:" << endl;
+    //myList.traverse();
 
-    // Search for an element
-    int keyToSearch = 2;
-    if (myList.search(keyToSearch)) {
-        cout << "Found key: " << keyToSearch << endl;
-    }
-    else {
-        cout << "Key not found: " << keyToSearch << endl;
-    }
+    //// Search for an element
+    //int keyToSearch = 2;
+    //if (myList.search(keyToSearch)) {
+    //    cout << "Found key: " << keyToSearch << endl;
+    //}
+    //else {
+    //    cout << "Key not found: " << keyToSearch << endl;
+    //}
 
-    // Delete an element
-    myList.deleteNode(); // Delete the current node
+    //// Delete an element
+    //myList.deleteNode(); // Delete the current node
 
-    // Traverse and print the list after deletion
-    cout << "Traversing the list after deletion:" << endl;
-    myList.traverse();
+    //// Traverse and print the list after deletion
+    //cout << "Traversing the list after deletion:" << endl;
+    //myList.traverse();
 
 	return 0;
 }
