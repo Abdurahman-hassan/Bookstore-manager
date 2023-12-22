@@ -84,10 +84,16 @@ bool User::display(string& username, string& name)
 void User::insert(const string& username, const string& password, const string& name)
 {
 	UserData data;
+	int key = 0;
+	if (!temp.currsorIsEmpty()) {
+		temp.toEnd();
+		temp.retrieveKey(key);
+	}
+
+	key++;
 	data.name = name;
 	data.username = username;
 	data.password = password;
-	int key = temp.listSize() + 1;
 	temp.insertEnd(key, data);
 }
 

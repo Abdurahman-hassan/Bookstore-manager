@@ -50,10 +50,16 @@ void Book::display()
 
 void Book::insert(const string& name, const string& category)
 {
-	BookData data;
+	BookData data, curr;
+	int key = 0;
+	if (!temp.currsorIsEmpty()) {
+		temp.toEnd();
+		temp.retrieveKey(key);
+	}
+	
+	key++;
 	data.name = name;
 	data.category = category;
-	int key = temp.listSize() + 1;
 	temp.insertEnd(key, data);
 }
 
@@ -62,7 +68,6 @@ void Book::update(const string& name, const string& category)
 	BookData data;
 	data.name = name;
 	data.category = category;
-	int key = temp.listSize() + 1;
 	temp.updateData(data);
 }
 
