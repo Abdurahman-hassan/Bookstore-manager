@@ -2,15 +2,19 @@
 #include <string>
 #include <fstream>
 #include "User.h"
+#include "Book.h"
 using namespace std;
 
 int main()
 {
     User usr;
+    Book bok;
     string username;
-    bool isLogin = false;
-    usr.display(username, isLogin);
+    bool isLogin;
+    isLogin = usr.display(username);
 
+    if(isLogin)
+        bok.display(username);
 
     //// Create a List of integers
     //GenericList<char> myList;

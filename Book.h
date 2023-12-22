@@ -20,8 +20,13 @@ public:
 	Book();
 	~Book();
 	void insert(const string&, const string&);
+	void update(const string&, const string&);
 	void reserveBook(int&, const string&);
-	void display(string&, bool&);
+	void display(string&);
+	void displayAdmin(string&);
+	void displayUser(string&);
+	void displayDetailsAdmin(BookData&, string username);
+	void displayDetailsUser(BookData&, string username);
 	bool serach(int&);
 	bool serach(const string&);
 	int size();

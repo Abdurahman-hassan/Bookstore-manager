@@ -7,6 +7,7 @@ using std::string;
 User::User()
 {
 	insert("admin", "admin", "General Manager");
+	insert("ahmed", "123", "Ahmed");
 }
 
 User::~User()
@@ -15,11 +16,12 @@ User::~User()
 }
 
 
-void User::display(string& username, bool& found)
+bool User::display(string& username)
 {
 	string password;
 	char ask = 'N';
 	int chose = 0;
+	bool found = false;
 	do {
 
 		if (chose == 0)
@@ -35,7 +37,7 @@ void User::display(string& username, bool& found)
 			cout << "Enter Password: ";
 			cin >> password;
 			
-			bool found = serach(username, password);
+			found = serach(username, password);
 			if (!found)
 			{
 				cout << "Not Found \n";
@@ -43,8 +45,11 @@ void User::display(string& username, bool& found)
 				cin >> ask;
 			}
 			else
-				cout << "Welcome To Bookstore";
-
+			{
+				UserData data;
+				temp.retrieveData(data);
+				cout <<"\n'" << data.name << "' Welcome To Bookstore \n";
+			}
 		}
 
 		else if (chose == 2)
@@ -56,23 +61,23 @@ void User::display(string& username, bool& found)
 			cin >> username;
 			cout << "Enter Password: ";
 			cin >> password;
-			bool found = serach(username);
+			found = serach(username);
 			if (found) {
 				cout << "This User Already Exist \n" << endl;
-				cout << "Would you like to login again?(Y/N)" << endl;
+				cout << "Would you like to Register again?(Y/N)" << endl;
 				cin >> ask;
 			}
 			else {
 				found = true;
 				insert(username, password, name);
-				cout << "Welcome To Bookstore";
+				cout << "\n'" << name << "' Welcome To Bookstore \n";
 			}
 		}
 		
 
 	} while (ask != 'N' && ask != 'n');
 
-
+	return found;
 }
 
 
@@ -104,17 +109,12 @@ bool User::serach(const string& username)
 
 bool User::serach(const string& username, const string& password)
 {
-	if (username == "admin" && password == "admin")
-	{
-		return true;
-	}
-
 	bool found = false; UserData data;
 	temp.toFirst();
 	while (!temp.currsorIsEmpty())
 	{
-		//temp.retrieveData(data);
-		if (data.username == username && data.username == password)
+		temp.retrieveData(data);
+		if (data.username == username && data.password == password)
 			return true;
 
 		temp.advance();

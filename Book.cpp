@@ -15,53 +15,30 @@ Book::~Book()
 }
 
 
-void Book::display(string& name, bool& found)
+void Book::display(string& username)
 {
-	string category;
 	char ask = 'N';
 	int chose = 0;
+	string name, category;
+	bool found = false;
+
 	do {
-
-		if (chose == 0)
+		cout << endl;
+		if (username == "admin") 
 		{
-			cout << "Select Please choose the action you would like to perform: \n"
-				<< "1) Search \n" << "2)Add\n" << "3) Display All \n";
-
-			cin >> chose;
+			displayAdmin(username);
+			cout << "Would you like to take another action?(Y/N)\n" << endl;
+			cin >> ask;
 		}
 
-		if (chose == 1)
+		else 
 		{
-			cout << "Enter Book Name: ";
-			cin >> name;
-			found = serach(name);
-			if (found) {
-				
-			}
-			else {
-				cout << "Not Found \n";
-			}
-		}
-
-		else if (chose == 2)
-		{
-			cout << "Enter Book Name: ";
-			cin >> name;
-			cout << "Enter Category Name: ";
-			cin >> category;
-
-			insert(name, category);
-			cout << "The book has been added successfully";
-
-		}
-
-		if (chose > 0) {
-			cout << "Would you like to take another action?(Y/N)" << endl;
+			displayUser(username);
+			cout << "Would you like to take another action?(Y/N)\n" << endl;
 			cin >> ask;
 		}
 
 	} while (ask != 'N' && ask != 'n');
-
 
 }
 
@@ -75,6 +52,14 @@ void Book::insert(const string& name, const string& category)
 	temp.insertEnd(key, data);
 }
 
+void Book::update(const string& name, const string& category)
+{
+	BookData data;
+	data.name = name;
+	data.category = category;
+	int key = temp.listSize() + 1;
+	temp.updateData(data);
+}
 
 void Book::reserveBook(int& key, const string& username)
 {
@@ -133,15 +118,146 @@ void Book::loadData()
 }
 
 
-void displayAdmin(string& username) 
+void Book::displayAdmin(string& username)
 {
+	int chose = 0;
+	string name, category;
+	bool found = false;
+
+	if (chose == 0)
+	{
+		cout << "Select Please choose the action you would like to perform: \n"
+			<< "1) Search \n" << "2) Display All \n" << "3) Add \n";
+
+		cin >> chose;
+	}
+
+	if (chose == 1)
+	{
+		cout << "Enter Book Name: ";
+		cin >> name;
+		found = serach(name);
+		if (found) {
+
+		}
+		else {
+			cout << "Not Found \n";
+		}
+	}
+
+	else if (chose == 3)
+	{
+		cout << "Enter Book Name: ";
+		cin >> name;
+		cout << "Enter Category Name: ";
+		cin >> category;
+
+		insert(name, category);
+		cout << "The book has been added successfully\n";
+
+	}
 	
 }
 
-void displayUser(string& username) 
+void Book::displayUser(string& username) 
 {
+	string name;
+	int chose = 0;
+	bool found = false;
+	BookData data;
 
+	if (chose == 0)
+	{
+		cout << "Select Please choose the action you would like to perform: \n"
+			<< "1) Search \n" << "2) Display All \n" << "3) My Reserves \n";
+
+		cin >> chose;
+	}
+
+	if (chose == 1)
+	{
+		cout << "Enter Book Name: ";
+		cin >> name;
+		found = serach(name);
+		if (found) {
+			temp.retrieveData(data);
+			displayDetailsUser(data, username);
+		}
+		else {
+			cout << "Not Found \n";
+		}
+	}
+
+	else if (chose == 3)
+	{
+		/*cout << "Enter Book Name: ";
+		cin >> name;
+		cout << "Enter Category Name: ";
+		cin >> category;
+
+		insert(name, category);
+		cout << "The book has been added successfully";
+		*/
+
+	}
 }
 
+void Book::displayDetailsAdmin(BookData& data, string username)
+{
+	int chose = 0;
+	string name, category;
+	if (chose == 0)
+	{
+		cout << "Select Please choose the action you would like to perform: \n"
+			<< "1) Edit \n" << "2) Delete \n" << "3) Back To Home \n";
+
+		cin >> chose;
+	}
+
+	if (chose == 1)
+	{
+		cout << "Enter Book Name: ";
+		cin >> name;
+		cout << "Enter Category Name: ";
+		cin >> category;
+
+		update(name, category);
+		cout << "The book has been added successfully\n";
+	}
+
+	else if (chose == 3)
+	{
+		display(username);
+	}
+}
+
+void Book::displayDetailsUser(BookData& data, string username)
+{
+	int chose = 0;
+	string name, category;
+	if (chose == 0)
+	{
+		cout << "Select Please choose the action you would like to perform: \n"
+			<< "1) Reserve \n" << "2) Back To Home \n";
+
+		cin >> chose;
+	}
+
+	if (chose == 1)
+	{
+		cout << "Enter Book Name: ";
+		cin >> name;
+		cout << "Enter Category Name: ";
+		cin >> category;
+
+		update(name, category);
+		cout << "The book has been added successfully\n";
+	}
+
+	else if (chose == 2)
+	{
+		display(username);
+	}
+}
 
 template class GenericList<BookData>;

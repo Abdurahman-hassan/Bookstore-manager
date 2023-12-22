@@ -19,7 +19,7 @@ public:
 	User();
 	~User();
 	void insert(const string&, const string&, const string&);
-	void display(string&, bool&);
+	bool display(string&);
 	bool serach(const string&);
 	bool serach(const string&, const string&);
 	int size();
