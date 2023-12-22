@@ -8,13 +8,14 @@ using namespace std;
 int main()
 {
     User usr;
-    Book bok;
-    string username;
+    
+    string username, name;
     bool isLogin;
-    isLogin = usr.display(username);
-
+    isLogin = usr.display(username, name);
+    
+    Book bok(username, name);
     if(isLogin)
-        bok.display(username);
+        bok.display();
 
     //// Create a List of integers
     //GenericList<char> myList;

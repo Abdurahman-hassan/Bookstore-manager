@@ -16,7 +16,7 @@ User::~User()
 }
 
 
-bool User::display(string& username)
+bool User::display(string& username, string& name)
 {
 	string password;
 	char ask = 'N';
@@ -40,7 +40,8 @@ bool User::display(string& username)
 			found = serach(username, password);
 			if (!found)
 			{
-				cout << "Not Found \n";
+				cout << "Not Found \n";  
+				chose = 0;
 			    cout <<"Would you like to login again?(Y/N)"<< endl;
 				cin >> ask;
 			}
@@ -54,7 +55,6 @@ bool User::display(string& username)
 
 		else if (chose == 2)
 		{
-			string name;
 			cout << "Enter Name: ";
 			cin >> name;
 			cout << "Enter Username: ";

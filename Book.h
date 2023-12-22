@@ -18,21 +18,26 @@ class Book
 {
 public:
 	Book();
+	Book(string&, string&);
 	~Book();
 	void insert(const string&, const string&);
 	void update(const string&, const string&);
-	void reserveBook(int&, const string&);
-	void display(string&);
-	void displayAdmin(string&);
-	void displayUser(string&);
-	void displayDetailsAdmin(BookData&, string username);
-	void displayDetailsUser(BookData&, string username);
+	void reserveBook(int&);
+	void display();
+	void displayAdmin();
+	void displayUser();
+	void displayDetailsAdmin(BookData&);
+	void displayDetailsUser(BookData&);
 	bool serach(int&);
 	bool serach(const string&);
 	int size();
 	void loadData();
+	void printAll();
+	void printData(BookData);
 private:
 	GenericList<BookData> temp;
+	string username;
+	string visitorName;
 };
 
 #endif //BOOK_HEADER_H
