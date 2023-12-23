@@ -21,7 +21,7 @@ bool User::display(string& username, string& name)
 	string password;
 	char ask = 'N';
 	int chose = 0;
-	bool found = false;
+	bool found;
 	do {
 
 		if (chose == 0)

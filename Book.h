@@ -10,6 +10,8 @@ class BookData {
 public:
 	string name;
 	string category;
+	float price;
+	string author;
 	bool isReserved;
 	string reservedBy;
 };
@@ -20,8 +22,8 @@ public:
 	Book();
 	Book(string&, string&);
 	~Book();
-	void insert(const string&, const string&);
-	void update(const string&, const string&);
+	void insert(const string&, const string&, const float&, const string&);
+	void update(const string&, const string&, const float&, const string&);
 	void reserveBook(int&);
 	void display();
 	void displayAdmin();
@@ -33,6 +35,7 @@ public:
 	int size();
 	void loadData();
 	void printAll();
+	void myReservation();
 	void printData(BookData);
 private:
 	GenericList<BookData> temp;

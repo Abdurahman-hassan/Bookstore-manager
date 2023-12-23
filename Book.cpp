@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include "Book.h"
 using namespace std;
 using std::string;
@@ -12,6 +13,12 @@ Book::Book()
 Book::Book(string& user, string& visitor) {
 	visitorName = visitor;
 	username = user;
+
+	insert("c++","CS", 300, "Sams");
+	insert("math","MS",300,"Abdel Hady");
+	insert("asp","CS",250,"Sams");
+	insert("php","CS",200,"Sams");
+	insert("pmp","OR",350,"Hamdy Attia");
 }
 
 Book::~Book()
@@ -48,7 +55,7 @@ void Book::display()
 }
 
 
-void Book::insert(const string& name, const string& category)
+void Book::insert(const string& name, const string& category, const float& price, const string& author)
 {
 	BookData data, curr;
 	int key = 0;
@@ -60,14 +67,18 @@ void Book::insert(const string& name, const string& category)
 	key++;
 	data.name = name;
 	data.category = category;
+	data.price = price;
+	data.author = author;
 	temp.insertEnd(key, data);
 }
 
-void Book::update(const string& name, const string& category)
+void Book::update(const string& name, const string& category, const float& price, const string& author)
 {
 	BookData data;
-	data.name = name;
-	data.category = category;
+	data.name = (name !="")? name : data.name;
+	data.category = (category !="")? category : data.category;
+	data.price = (price >0)? price : data.price;
+	data.author = (author !="") ? author : data.author;
 	temp.updateData(data);
 }
 
@@ -81,7 +92,7 @@ void Book::reserveBook(int& key)
 		data.isReserved = true;
 		data.reservedBy = username;
 		temp.updateData(data);
-		cout << "The book has been updated successfully";
+		cout << "The book has been updated successfully"<<endl;
 	}
 	else {
 		cout << "Not Found\n";
@@ -104,9 +115,10 @@ bool Book::serach(const string& name)
 {
 	bool found = false; BookData data;
 	temp.toFirst();
+
 	while (!temp.currsorIsEmpty())
 	{
-		//temp.retrieveData(data);
+		temp.retrieveData(data);
 		if (data.name == name)
 			return true;
 
@@ -131,7 +143,8 @@ void Book::loadData()
 void Book::displayAdmin()
 {
 	int chose = 0;
-	string name, category;
+	float price;
+	string name, category, author;
 	bool found = false;
 
 	if (chose == 0)
@@ -162,12 +175,12 @@ void Book::displayAdmin()
 
 	else if (chose == 3)
 	{
-		cout << "Enter Book Name: ";
-		cin >> name;
-		cout << "Enter Category Name: ";
-		cin >> category;
+		cout << "Enter Book Name: ";       cin >> name;
+		cout << "Enter Category Name: ";   cin >> category;
+		cout << "Enter Author Name: ";     cin >> author;
+		cout << "Enter Price: ";		   cin >> price;
 
-		insert(name, category);
+		insert(name, category, price, author);
 		cout << "The book has been added successfully\n";
 
 	}
@@ -184,7 +197,7 @@ void Book::displayUser()
 	if (chose == 0)
 	{
 		cout << "Select Please choose the action you would like to perform: \n"
-			<< "1) Search \n" << "2) Display All \n" << "3) My Reserves \n";
+			<< "1) Search \n" << "2) Display All \n" << "3) My Reservation \n";
 
 		cin >> chose;
 	}
@@ -207,22 +220,15 @@ void Book::displayUser()
 	}
 	else if (chose == 3)
 	{
-		/*cout << "Enter Book Name: ";
-		cin >> name;
-		cout << "Enter Category Name: ";
-		cin >> category;
-
-		insert(name, category);
-		cout << "The book has been added successfully";
-		*/
-
+		myReservation();
 	}
 }
 
 void Book::displayDetailsAdmin(BookData& data)
 {
 	int chose = 0;
-	string name, category;
+	float price;
+	string name, category, author;
 	if (chose == 0)
 	{
 		cout << "Select Please choose the action you would like to perform: \n"
@@ -233,12 +239,12 @@ void Book::displayDetailsAdmin(BookData& data)
 
 	if (chose == 1)
 	{
-		cout << "Enter Book Name: ";
-		cin >> name;
-		cout << "Enter Category Name: ";
-		cin >> category;
+		cout << "Enter Book Name: ";       cin >> name;
+		cout << "Enter Category Name: ";   cin >> category;
+		cout << "Enter Author Name: ";     cin >> author;
+		cout << "Enter Price: ";		   cin >> price;
 
-		update(name, category);
+		update(name, category, price, author);
 		cout << "The book has been added successfully\n";
 	}
 	else if (chose == 2) {
@@ -267,13 +273,9 @@ void Book::displayDetailsUser(BookData& data)
 
 	if (chose == 1)
 	{
-		cout << "Enter Book Name: ";
-		cin >> name;
-		cout << "Enter Category Name: ";
-		cin >> category;
-
-		update(name, category);
-		cout << "The book has been added successfully\n";
+		int key;
+		temp.retrieveKey(key);
+		reserveBook(key);
 	}
 
 	else if (chose == 2)
@@ -321,10 +323,37 @@ void Book::printAll()
 	}
 }
 
+void Book::myReservation() 
+{
+	if (!temp.isEmpty()) {
+		temp.toFirst();
+		BookData data;
+		int key;
+		bool chk = false;
+		while (!temp.currsorIsEmpty())
+		{
+			temp.retrieveData(data);
+			temp.advance();
+			if (data.reservedBy == username) {
+				printData(data);
+				chk = true;
+			}
+		}
+
+		if(!chk)
+			cout << "You don't have a reservation" << endl;
+	}
+	else {
+		cout << "There are no books available" << endl;
+	}
+}
+
 void Book:: printData(BookData data)
 {
 	cout << "Book Name: " << data.name<<endl;
 	cout << "Category Name: " << data.category<<endl;
+	cout << "Price: " << data.price<<endl;
+	cout << "Author: " << data.author<<endl;
 	
 	if (username == "admin") {
 		cout << "Is Reserved: " << data.isReserved << endl;
