@@ -23,7 +23,7 @@ Book::Book(string& user, string& visitor) {
 
 Book::~Book()
 {
-	temp.makeListEmpty();
+	book_node.makeListEmpty();
 }
 
 
@@ -59,9 +59,9 @@ void Book::insert(const string& name, const string& category, const float& price
 {
 	BookData data, curr;
 	int key = 0;
-	if (!temp.currsorIsEmpty()) {
-		temp.toEnd();
-		temp.retrieveKey(key);
+	if (!book_node.currsorIsEmpty()) {
+		book_node.toEnd();
+		book_node.retrieveKey(key);
 	}
 	
 	key++;
@@ -69,7 +69,7 @@ void Book::insert(const string& name, const string& category, const float& price
 	data.category = category;
 	data.price = price;
 	data.author = author;
-	temp.insertEnd(key, data);
+	book_node.insertEnd(key, data);
 }
 
 void Book::update(const string& name, const string& category, const float& price, const string& author)
@@ -79,7 +79,7 @@ void Book::update(const string& name, const string& category, const float& price
 	data.category = (category !="")? category : data.category;
 	data.price = (price >0)? price : data.price;
 	data.author = (author !="") ? author : data.author;
-	temp.updateData(data);
+	book_node.updateData(data);
 }
 
 void Book::reserveBook(int& key)
@@ -88,10 +88,10 @@ void Book::reserveBook(int& key)
 	found = serach(key);
 	if (found) {
 		BookData data;
-		temp.retrieveData(data);
+		book_node.retrieveData(data);
 		data.isReserved = true;
 		data.reservedBy = username;
-		temp.updateData(data);
+		book_node.updateData(data);
 		cout << "The book has been updated successfully"<<endl;
 	}
 	else {
@@ -103,10 +103,10 @@ void Book::reserveBook(int& key)
 bool Book::serach(int& key)
 {
 	bool found = false;  BookData data;
-	temp.toFirst();
-	found = temp.search(key);
+	book_node.toFirst();
+	found = book_node.search(key);
 	if (found)
-		temp.retrieveData(data);
+		book_node.retrieveData(data);
 
 	return found;
 }
@@ -114,15 +114,15 @@ bool Book::serach(int& key)
 bool Book::serach(const string& name)
 {
 	bool found = false; BookData data;
-	temp.toFirst();
+	book_node.toFirst();
 
-	while (!temp.currsorIsEmpty())
+	while (!book_node.currsorIsEmpty())
 	{
-		temp.retrieveData(data);
+		book_node.retrieveData(data);
 		if (data.name == name)
 			return true;
 
-		temp.advance();
+		book_node.advance();
 	}
 	return found;
 }
@@ -130,7 +130,7 @@ bool Book::serach(const string& name)
 
 int Book::size()
 {
-	return temp.listSize();
+	return book_node.listSize();
 }
 
 
@@ -208,7 +208,7 @@ void Book::displayUser()
 		cin >> name;
 		found = serach(name);
 		if (found) {
-			temp.retrieveData(data);
+			book_node.retrieveData(data);
 			displayDetailsUser(data);
 		}
 		else {
@@ -248,7 +248,7 @@ void Book::displayDetailsAdmin(BookData& data)
 		cout << "The book has been added successfully\n";
 	}
 	else if (chose == 2) {
-		temp.deleteNode();
+		book_node.deleteNode();
 		cout << "The book has been deleted successfully\n";
 		display();
 	}
@@ -274,7 +274,7 @@ void Book::displayDetailsUser(BookData& data)
 	if (chose == 1)
 	{
 		int key;
-		temp.retrieveKey(key);
+		book_node.retrieveKey(key);
 		reserveBook(key);
 	}
 
@@ -287,15 +287,15 @@ void Book::displayDetailsUser(BookData& data)
 
 void Book::printAll() 
 {
-	if (!temp.isEmpty()) {
-		temp.toFirst();
+	if (!book_node.isEmpty()) {
+		book_node.toFirst();
 		BookData data;
 		int key;
-		while (!temp.currsorIsEmpty())
+		while (!book_node.currsorIsEmpty())
 		{
-			temp.retrieveKey(key);
-			temp.retrieveData(data);
-			temp.advance();
+			book_node.retrieveKey(key);
+			book_node.retrieveData(data);
+			book_node.advance();
 			if (username != "admin" && !data.isReserved) {
 				cout << key <<") Book Name: " << data.name << endl;
 			}
@@ -307,11 +307,11 @@ void Book::printAll()
 		cout << "Please select the book on which you would like to perform the action: \n";
 		cin >> key;
 
-		temp.search(key);
-		temp.retrieveData(data);
+		book_node.search(key);
+		book_node.retrieveData(data);
 		
 		if (username == "admin") {
-			temp.search(key);
+			book_node.search(key);
 			displayDetailsAdmin(data);
 		}
 		else {
@@ -325,15 +325,15 @@ void Book::printAll()
 
 void Book::myReservation() 
 {
-	if (!temp.isEmpty()) {
-		temp.toFirst();
+	if (!book_node.isEmpty()) {
+		book_node.toFirst();
 		BookData data;
 		int key;
 		bool chk = false;
-		while (!temp.currsorIsEmpty())
+		while (!book_node.currsorIsEmpty())
 		{
-			temp.retrieveData(data);
-			temp.advance();
+			book_node.retrieveData(data);
+			book_node.advance();
 			if (data.reservedBy == username) {
 				printData(data);
 				chk = true;

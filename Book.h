@@ -38,7 +38,7 @@ public:
 	void myReservation();
 	void printData(BookData);
 private:
-	LinkedListUtils<BookData> temp;
+	LinkedListUtils<BookData> book_node;
 	string username;
 	string visitorName;
 };
