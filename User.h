@@ -25,7 +25,7 @@ public:
 	int size();
 	void loadData();
 private:
-	LinkedListUtils<UserData> temp;
+	LinkedListUtils<UserData> user_node;
 };
 
 #endif //USER_HEADER_H

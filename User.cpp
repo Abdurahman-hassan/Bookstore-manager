@@ -12,7 +12,7 @@ User::User()
 
 User::~User()
 {
-	temp.makeListEmpty();
+	user_node.makeListEmpty();
 }
 
 
@@ -48,7 +48,7 @@ bool User::display(string& username, string& name)
 			else
 			{
 				UserData data;
-				temp.retrieveData(data);
+				user_node.retrieveData(data);
 				cout <<"\n'" << data.name << "' Welcome To Bookstore \n";
 			}
 		}
@@ -85,30 +85,30 @@ void User::insert(const string& username, const string& password, const string& 
 {
 	UserData data;
 	int key = 0;
-	if (!temp.currsorIsEmpty()) {
-		temp.toEnd();
-		temp.retrieveKey(key);
+	if (!user_node.currsorIsEmpty()) {
+		user_node.toEnd();
+		user_node.retrieveKey(key);
 	}
 
 	key++;
 	data.name = name;
 	data.username = username;
 	data.password = password;
-	temp.insertEnd(key, data);
+	user_node.insertEnd(key, data);
 }
 
 
 bool User::serach(const string& username)
 {
 	bool found = false; UserData data;
-	temp.toFirst();
-	while (!temp.currsorIsEmpty())
+	user_node.toFirst();
+	while (!user_node.currsorIsEmpty())
 	{
-		temp.retrieveData(data);
+		user_node.retrieveData(data);
 		if (data.username == username)
 			return true;
 
-		temp.advance();
+		user_node.advance();
 	}
 	return found;
 }
@@ -116,21 +116,21 @@ bool User::serach(const string& username)
 bool User::serach(const string& username, const string& password)
 {
 	bool found = false; UserData data;
-	temp.toFirst();
-	while (!temp.currsorIsEmpty())
+	user_node.toFirst();
+	while (!user_node.currsorIsEmpty())
 	{
-		temp.retrieveData(data);
+		user_node.retrieveData(data);
 		if (data.username == username && data.password == password)
 			return true;
 
-		temp.advance();
+		user_node.advance();
 	}
 	return found;
 }
 
 int User::size()
 {
-	return temp.listSize();
+	return user_node.listSize();
 }
 
 
