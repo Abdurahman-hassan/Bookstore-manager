@@ -139,4 +139,4 @@ void User::loadData()
 
 }
 
-template class GenericList<UserData>;
+template class LinkedListUtils<UserData>;

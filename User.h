@@ -2,7 +2,7 @@
 #define USER_HEADER_H
 
 #include <iostream>
-#include "GenericList.h"
+#include "LinkedListUtils.h"
 using namespace std;
 using std::string;
 
@@ -25,7 +25,7 @@ public:
 	int size();
 	void loadData();
 private:
-	GenericList<UserData> temp;
+	LinkedListUtils<UserData> temp;
 };
 
 #endif //USER_HEADER_H
