@@ -361,4 +361,4 @@ void Book:: printData(BookData data)
 	}
 }
 
-template class GenericList<BookData>;
+template class LinkedListUtils<BookData>;

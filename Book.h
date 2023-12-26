@@ -2,7 +2,7 @@
 #define BOOK_HEADER_H
 
 #include <iostream>
-#include "GenericList.h"
+#include "LinkedListUtils.h"
 using namespace std;
 using std::string;
 
@@ -38,7 +38,7 @@ public:
 	void myReservation();
 	void printData(BookData);
 private:
-	GenericList<BookData> temp;
+	LinkedListUtils<BookData> temp;
 	string username;
 	string visitorName;
 };
