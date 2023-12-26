@@ -1,6 +1,3 @@
-#include "LinkedListUtils.h"
-#include "User.h"
-#include "Book.h"
 template <class L>
 LinkedListUtils<L>::LinkedListUtils() {
     head = nullptr;
@@ -213,8 +210,3 @@ template <typename L>
 LinkedListUtils<L>::~LinkedListUtils() {
     makeListEmpty();
 }
-
-template class LinkedListUtils<int>;
-template class LinkedListUtils<char>;
-template class LinkedListUtils<UserData>;
-template class LinkedListUtils<BookData>;

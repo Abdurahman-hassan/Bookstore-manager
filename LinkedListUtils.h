@@ -60,4 +60,6 @@ private:
     Node *head, *cursor, *prev;
 };
 
+#include "LinkedListUtils.tpp"
+
 #endif //LINKEDLISTUTILS_H

@@ -138,5 +138,3 @@ void User::loadData()
 {
 
 }
-
-template class LinkedListUtils<UserData>;

@@ -360,5 +360,3 @@ void Book:: printData(BookData data)
 		cout << "Reserved By: " << data.reservedBy << endl;
 	}
 }
-
-template class LinkedListUtils<BookData>;
