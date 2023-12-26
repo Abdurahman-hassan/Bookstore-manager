@@ -1,18 +1,18 @@
-#ifndef LINKEDLIST_HEADER_H
-#define LINKEDLIST_HEADER_H
+#ifndef LINKEDLISTUTILS_H
+#define LINKEDLISTUTILS_H
 
 # include <iostream>
 using namespace std;
 using std::string;
 
 template <class L>
-class List
+class LinkedListUtils
 {
 public:
 
 // =========== Constructor and Destructor ===========
-    List();
-    ~List();
+    LinkedListUtils();
+    ~LinkedListUtils();
 
 // =========== checker functions ===========
     bool isEmpty() const;
@@ -26,6 +26,7 @@ public:
     void advance();
 
 // =========== Retrieval functions ===========
+    void retrieveData(L&) const;
     void retrieveData(L &, int &) const;
     void retrieveKey(int &) const;
 
@@ -59,4 +60,4 @@ private:
     Node *head, *cursor, *prev;
 };
 
-#endif //LINKEDLIST_HEADER_H
+#endif //LINKEDLISTUTILS_H

@@ -1,41 +1,42 @@
-# include "linkedlist_header.h"
-
+#include "LinkedListUtils.h"
+#include "User.h"
+#include "Book.h"
 template <class L>
-List<L>::List() {
+LinkedListUtils<L>::LinkedListUtils() {
     head = nullptr;
     cursor = nullptr;
     prev = nullptr;
 }
 
 template <typename L>
-bool List<L>::isEmpty() const {
+bool LinkedListUtils<L>::isEmpty() const {
     return head == nullptr;
 }
 
 template <typename L>
-bool List<L>::currsorIsEmpty() const {
+bool LinkedListUtils<L>::currsorIsEmpty() const {
     return cursor == nullptr;
 }
 
 template <typename L>
-void List<L>::toFirst() {
+void LinkedListUtils<L>::toFirst() {
     cursor = head;
     prev = nullptr;
 }
 
 template <typename L>
-bool List<L>::atFirst() const {
+bool LinkedListUtils<L>::atFirst() const {
     return cursor == head;
 }
 
 template <typename L>
-void List<L>::advance() {
+void LinkedListUtils<L>::advance() {
     prev = cursor;
     cursor = cursor->next;
 }
 
 template <typename L>
-void List<L>::toEnd() {
+void LinkedListUtils<L>::toEnd() {
     toFirst();
     if (!isEmpty()) {
         while (cursor->next != nullptr)
@@ -44,7 +45,7 @@ void List<L>::toEnd() {
 }
 
 template <typename L>
-bool List<L>::atEnd() const {
+bool LinkedListUtils<L>::atEnd() const {
     if (isEmpty())
         return true;
     else if (currsorIsEmpty())
@@ -54,23 +55,28 @@ bool List<L>::atEnd() const {
 }
 
 template <typename L>
-void List<L>::retrieveData(L &d, int &k) const {
+void LinkedListUtils<L>::retrieveData(L& d) const {
+    d = cursor->data;
+}
+
+template <typename L>
+void LinkedListUtils<L>::retrieveData(L &d, int &k) const {
         d = cursor->data;
         k = cursor->key;
 }
 
 template <typename L>
-void List<L>::retrieveKey(int &k) const {
+void LinkedListUtils<L>::retrieveKey(int &k) const {
      k = cursor->key;
 }
 
 template <typename L>
-void List<L>::updateData(const L &d) {
+void LinkedListUtils<L>::updateData(const L &d) {
      cursor->data = d;
 }
 
 template <typename L>
-int List<L>::listSize() const {
+int LinkedListUtils<L>::listSize() const {
     int count = 0;
     Node* temp = head;
     while (temp != nullptr) {
@@ -81,7 +87,7 @@ int List<L>::listSize() const {
 }
 
 template <typename L>
-void List<L>::insertFirst(const int &k, const L &d) {
+void LinkedListUtils<L>::insertFirst(const int &k, const L &d) {
     Node* temp = new Node;
     temp->key = k;
     temp->data = d;
@@ -94,7 +100,7 @@ void List<L>::insertFirst(const int &k, const L &d) {
 }
 
 template <typename L>
-void List<L>::insertAfter(const int &k, const L &d) {
+void LinkedListUtils<L>::insertAfter(const int &k, const L &d) {
     Node* temp = new Node;
     temp->key = k;
     temp->data = d;
@@ -107,7 +113,7 @@ void List<L>::insertAfter(const int &k, const L &d) {
 }
 
 template <typename L>
-void List<L>::insertBefore(const int &k, const L &d) {
+void LinkedListUtils<L>::insertBefore(const int &k, const L &d) {
     Node* temp = new Node;
     temp->key = k;
     temp->data = d;
@@ -119,7 +125,7 @@ void List<L>::insertBefore(const int &k, const L &d) {
 }
 
 template <typename L>
-void List<L>::insertEnd(const int &k, const L &d) {
+void LinkedListUtils<L>::insertEnd(const int &k, const L &d) {
     if (isEmpty())
         insertFirst(k, d);
     else {
@@ -129,7 +135,7 @@ void List<L>::insertEnd(const int &k, const L &d) {
 }
 
 template <typename L>
-void List<L>::deleteNode() {
+void LinkedListUtils<L>::deleteNode() {
     Node* temp;
 
     if (!currsorIsEmpty()){
@@ -148,7 +154,7 @@ void List<L>::deleteNode() {
 }
 
 template <typename L>
-void List<L>::deleteFirst() {
+void LinkedListUtils<L>::deleteFirst() {
     if (!isEmpty()) {
         toFirst();
         deleteNode();
@@ -156,7 +162,7 @@ void List<L>::deleteFirst() {
 }
 
 template <typename L>
-void List<L>::deleteEnd() {
+void LinkedListUtils<L>::deleteEnd() {
     if (!isEmpty()) {
         toEnd();
         deleteNode();
@@ -164,14 +170,14 @@ void List<L>::deleteEnd() {
 }
 
 template <typename L>
-void List<L>::makeListEmpty() {
+void LinkedListUtils<L>::makeListEmpty() {
     toFirst();
     while (!isEmpty())
         deleteNode();
 }
 
 template <typename L>
-bool List<L>::search(const int &k) {
+bool LinkedListUtils<L>::search(const int &k) {
     bool found = false;
     toFirst();
     while (!found && cursor != nullptr) {
@@ -184,7 +190,7 @@ bool List<L>::search(const int &k) {
 }
 
 template <typename L>
-void List<L>::orderInsert(const int &k, const L &d) {
+void LinkedListUtils<L>::orderInsert(const int &k, const L &d) {
     toFirst();
     while (cursor != nullptr && cursor->key < k)
         advance();
@@ -195,18 +201,20 @@ void List<L>::orderInsert(const int &k, const L &d) {
 }
 
 template <typename L>
-void List<L>::traverse() {
+void LinkedListUtils<L>::traverse() {
     toFirst();
     while (!currsorIsEmpty()) {
-        cout << cursor->key << " " << cursor->data << endl;
+        cout << cursor->key; //<< " " << cursor->data << endl;
         advance();
     }
 }
 
 template <typename L>
-List<L>::~List() {
+LinkedListUtils<L>::~LinkedListUtils() {
     makeListEmpty();
 }
 
-template class List<int>;
-template class List<char>;
+template class LinkedListUtils<int>;
+template class LinkedListUtils<char>;
+template class LinkedListUtils<UserData>;
+template class LinkedListUtils<BookData>;
