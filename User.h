@@ -2,6 +2,9 @@
 #define USER_HEADER_H
 
 #include <iostream>
+#include <string>
+#include <fstream>
+
 #include "LinkedListUtils.h"
 using namespace std;
 using std::string;
@@ -9,7 +12,7 @@ using std::string;
 class UserData {
 public:
 	string username;
-	string name;
+	string job_title;
 	string password;
 };
 
@@ -24,6 +27,8 @@ public:
 	bool serach(const string&, const string&);
 	int size();
 	void loadData();
+	void saveToCSV(const string& filename);
+	void loadFromCSV(const string& filename);
 private:
 	LinkedListUtils<UserData> user_node;
 };
