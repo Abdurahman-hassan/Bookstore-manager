@@ -22,21 +22,32 @@ public:
 	Book();
 	Book(string&, string&);
 	~Book();
+	void initializeBookCollection();
 	void insert(const string&, const string&, const float&, const string&);
 	void update(const string&, const string&, const float&, const string&);
-	void reserveBook(int&);
 	void display();
 	void displayAdmin();
+	void adminSearchBook();
+	void addBook();
 	void displayUser();
-	void displayDetailsAdmin(BookData&);
+	void userSearchBook();
+	void displayDetailsAdmin(BookData&data, int key);
+	void editBook(BookData &data, int key);
+	void deleteBook(int key);
 	void displayDetailsUser(BookData&);
+	void reserveBook(int&);
+	void reserveBook(BookData &data);
 	bool serach(int&);
 	bool serach(const string&);
 	int size();
 	void loadData();
 	void printAll();
+	void promptForBookAction();
 	void myReservation();
-	void printData(BookData);
+	void printData(const BookData& data);
+	void saveToCSV(const string& filename);
+	void loadFromCSV(const string& filename);
+
 private:
 	LinkedListUtils<BookData> book_node;
 	string username;

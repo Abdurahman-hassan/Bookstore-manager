@@ -1,50 +1,32 @@
-#include <iostream>
-#include <cstring>
 #include "Book.h"
-using namespace std;
-using std::string;
+#include "CSVUtils.h"
 
+using namespace std;
 
 Book::Book() {
 }
 
-Book::Book(string&user, string&visitor) {
-    visitorName = visitor;
-    username = user;
-
-    insert("c++", "CS", 300, "Sams");
-    insert("math", "MS", 300, "Abdel Hady");
-    insert("asp", "CS", 250, "Sams");
-    insert("php", "CS", 200, "Sams");
-    insert("pmp", "OR", 350, "Hamdy Attia");
+Book::Book(string&user, string&visitor) : username(user), visitorName(visitor) {
+    initializeBookCollection();
 }
 
 Book::~Book() {
+    saveToCSV("books_database.csv");
     book_node.makeListEmpty();
 }
 
+void Book::initializeBookCollection() {
+    loadFromCSV("books_database.csv");
+}
 
 void Book::display() {
-    char ask = 'N';
-    int chose = 0;
-    string name, category;
-    bool found = false;
-
-    do {
-        cout << endl;
-        if (username == "admin") {
-            displayAdmin();
-            cout << "Would you like to take another action?(Y/N)\n" << endl;
-            cin >> ask;
-        }
-
-        else {
-            displayUser();
-            cout << "Would you like to take another action?(Y/N)\n" << endl;
-            cin >> ask;
-        }
+    char actionChoice = 'Y';
+    while (toupper(actionChoice) == 'Y') {
+        (username == "admin") ? displayAdmin() : displayUser();
+        cout << "Would you like to take another action? (Y/ anykey for exit)\n";
+        cin >> actionChoice;
+        cout << "Thank you for using our system\n";
     }
-    while (ask != 'N' && ask != 'n');
 }
 
 
@@ -62,6 +44,7 @@ void Book::insert(const string&name, const string&category, const float&price, c
     data.price = price;
     data.author = author;
     book_node.insertEnd(key, data);
+    saveToCSV("books_database.csv");
 }
 
 void Book::update(const string&name, const string&category, const float&price, const string&author) {
@@ -71,6 +54,7 @@ void Book::update(const string&name, const string&category, const float&price, c
     data.price = (price > 0) ? price : data.price;
     data.author = (author != "") ? author : data.author;
     book_node.updateData(data);
+    saveToCSV("books_database.csv");
 }
 
 void Book::reserveBook(int&key) {
@@ -82,11 +66,12 @@ void Book::reserveBook(int&key) {
         data.isReserved = true;
         data.reservedBy = username;
         book_node.updateData(data);
-        cout << "The book has been updated successfully" << endl;
+        cout << "The book has been  " << endl;
     }
     else {
         cout << "Not Found\n";
     }
+    saveToCSV("books_database.csv");
 }
 
 bool Book::serach(int&key) {
@@ -96,7 +81,6 @@ bool Book::serach(int&key) {
     found = book_node.search(key);
     if (found)
         book_node.retrieveData(data);
-
     return found;
 }
 
@@ -124,206 +108,355 @@ int Book::size() {
 void Book::loadData() {
 }
 
-
 void Book::displayAdmin() {
-    int chose = 0;
-    float price;
+    int choice;
+    cout << "Select the action you would like to perform: \n"
+            << "1) Search\n"
+            << "2) Display All\n"
+            << "3) Add\n";
+    cin >> choice;
+
+    switch (choice) {
+        case 1: adminSearchBook();
+            break;
+        case 2: printAll();
+            break;
+        case 3: addBook();
+            break;
+        default: cout << "Invalid choice\n";
+            break;
+    }
+}
+
+void Book::adminSearchBook() {
+    string name;
+    cout << "Enter Book Name: ";
+    cin >> name;
+    if (serach(name)) {
+        // Display book details for admin
+    }
+    else {
+        cout << "Not Found\n";
+    }
+}
+
+void Book::addBook() {
     string name, category, author;
-    bool found = false;
-
-    if (chose == 0) {
-        cout << "Select Please choose the action you would like to perform: \n"
-                << "1) Search \n" << "2) Display All \n" << "3) Add \n";
-
-        cin >> chose;
-    }
-
-    if (chose == 1) {
-        cout << "Enter Book Name: ";
-        cin >> name;
-        found = serach(name);
-        if (found) {
-        }
-        else {
-            cout << "Not Found \n";
-        }
-    }
-
-    else if (chose == 2) {
-        printAll();
-    }
-
-    else if (chose == 3) {
-        cout << "Enter Book Name: ";
-        cin >> name;
-        cout << "Enter Category Name: ";
-        cin >> category;
-        cout << "Enter Author Name: ";
-        cin >> author;
-        cout << "Enter Price: ";
-        cin >> price;
-
-        insert(name, category, price, author);
-        cout << "The book has been added successfully\n";
-    }
+    float price;
+    cout << "Enter Book Name: ";
+    cin >> name;
+    cout << "Enter Category Name: ";
+    cin >> category;
+    cout << "Enter Author Name: ";
+    cin >> author;
+    cout << "Enter Price: ";
+    cin >> price;
+    insert(name, category, price, author);
+    cout << "Book added successfully\n";
 }
 
 void Book::displayUser() {
-    string name;
-    int chose = 0;
-    bool found = false;
-    BookData data;
+    int choice;
+    cout << "Select the action you would like to perform: \n"
+            << "1) Search\n"
+            << "2) Display All\n"
+            << "3) My Reservation\n";
+    cin >> choice;
 
-    if (chose == 0) {
-        cout << "Select Please choose the action you would like to perform: \n"
-                << "1) Search \n" << "2) Display All \n" << "3) My Reservation \n";
-
-        cin >> chose;
-    }
-
-    if (chose == 1) {
-        cout << "Enter Book Name: ";
-        cin >> name;
-        found = serach(name);
-        if (found) {
-            book_node.retrieveData(data);
-            displayDetailsUser(data);
-        }
-        else {
-            cout << "Not Found \n";
-        }
-    }
-    else if (chose == 2) {
-        printAll();
-    }
-    else if (chose == 3) {
-        myReservation();
+    switch (choice) {
+        case 1: userSearchBook();
+            break;
+        case 2: printAll();
+            break;
+        case 3: myReservation();
+            break;
+        default: cout << "Invalid choice\n";
+            break;
     }
 }
 
-void Book::displayDetailsAdmin(BookData&data) {
-    int chose = 0;
-    float price;
+void Book::userSearchBook() {
+    string name;
+    cout << "Enter Book Name: ";
+    cin >> name;
+    if (serach(name)) {
+        BookData data;
+        book_node.retrieveData(data);
+        displayDetailsUser(data);
+    }
+    else {
+        cout << "Not Found\n";
+    }
+}
+
+
+void Book::displayDetailsAdmin(BookData&data, int key) {
+    printData(data);
+    int choice;
+    cout << "Select the action you would like to perform: \n"
+            << "1) Edit\n"
+            << "2) Delete\n"
+            << "3) Back To Home\n";
+    cin >> choice;
+
+    switch (choice) {
+        case 1: editBook(data, key);
+            break;
+        case 2: deleteBook(key);
+            break;
+        case 3: break; // Return to previous menu
+        default: cout << "Invalid choice\n";
+            break;
+    }
+}
+
+void Book::editBook(BookData&data, int key) {
     string name, category, author;
-    if (chose == 0) {
-        cout << "Select Please choose the action you would like to perform: \n"
-                << "1) Edit \n" << "2) Delete \n" << "3) Back To Home \n";
+    float price;
+    cout << "Enter Book Name: ";
+    cin >> name;
+    cout << "Enter Category Name: ";
+    cin >> category;
+    cout << "Enter Author Name: ";
+    cin >> author;
+    cout << "Enter Price: ";
+    cin >> price;
+    update(name, category, price, author);
+    cout << "The book has been updated successfully\n";
 
-        cin >> chose;
+    if (book_node.search(key)) {
+        // Update the book data based on user input
+        data.name = (name != "") ? name : data.name;
+        data.category = (category != "") ? category : data.category;
+        data.price = (price > 0) ? price : data.price;
+        data.author = (author != "") ? author : data.author;
+        book_node.updateData(data);  // Update the book with the new data
+    } else {
+        cout << "Book not found for editing." << endl;
     }
+}
 
-    if (chose == 1) {
-        cout << "Enter Book Name: ";
-        cin >> name;
-        cout << "Enter Category Name: ";
-        cin >> category;
-        cout << "Enter Author Name: ";
-        cin >> author;
-        cout << "Enter Price: ";
-        cin >> price;
-
-        update(name, category, price, author);
-        cout << "The book has been added successfully\n";
-    }
-    else if (chose == 2) {
+void Book::deleteBook(int key) {
+    if (book_node.search(key)) {
         book_node.deleteNode();
         cout << "The book has been deleted successfully\n";
-        display();
+    } else {
+        cout << "Book not found for deletion." << endl;
     }
-
-    else if (chose == 3) {
-        display();
-    }
+    saveToCSV("books_database.csv");
 }
 
 void Book::displayDetailsUser(BookData&data) {
-    int chose = 0;
-    string name, category;
-    if (chose == 0) {
-        cout << "Select Please choose the action you would like to perform: \n"
-                << "1) Reserve \n" << "2) Back To Home \n";
+    int choice;
+    cout << "Select the action you would like to perform: \n"
+            << "1) Reserve\n"
+            << "2) Back To Home\n";
+    cin >> choice;
 
-        cin >> chose;
-    }
-
-    if (chose == 1) {
-        int key;
-        book_node.retrieveKey(key);
-        reserveBook(key);
-    }
-
-    else if (chose == 2) {
-        display();
+    switch (choice) {
+        case 1: reserveBook(data);
+            break;
+        case 2: break; // Return to previous menu
+        default: cout << "Invalid choice\n";
+            break;
     }
 }
 
+void Book::reserveBook(BookData&data) {
+    int key;
+    book_node.retrieveKey(key);
+    reserveBook(key);
+    cout << "The book has been reserved successfully\n";
+}
 
 void Book::printAll() {
-    if (!book_node.isEmpty()) {
-        book_node.toFirst();
-        BookData data;
-        int key;
-        while (!book_node.currsorIsEmpty()) {
-            book_node.retrieveKey(key);
-            book_node.retrieveData(data);
-            book_node.advance();
-            if (username != "admin" && !data.isReserved) {
-                cout << key << ") Book Name: " << data.name << endl;
-            }
-            else {
-                cout << key << ") Book Name: " << data.name << endl;
-            }
-        }
-        cout << "Please select the book on which you would like to perform the action: \n";
-        cin >> key;
+    if (book_node.isEmpty()) {
+        cout << "There are no books available" << endl;
+        return;
+    }
 
-        book_node.search(key);
+    book_node.toFirst();
+    BookData data;
+    int key;
+    int bookNumber = 1;
+    while (!book_node.currsorIsEmpty()) {
+        book_node.retrieveKey(key);
         book_node.retrieveData(data);
-
-        if (username == "admin") {
-            book_node.search(key);
-            displayDetailsAdmin(data);
+        cout << bookNumber << ") Book Name: " << data.name;
+        if (username == "admin" && data.isReserved) {
+            cout << " (Reserved)";
         }
-        else {
+        cout << endl;
+        book_node.advance();
+        bookNumber++;
+    }
+    promptForBookAction();
+}
+
+// void Book::promptForBookAction() {
+//     int selectedNumber;
+//     cout << "Please select the book number on which you would like to perform the action: \n";
+//     cin >> selectedNumber;
+//
+//     // Convert selected number to corresponding key
+//     book_node.toFirst();
+//     int currentNumber = 1; // Start from the first book
+//     int key;
+//     bool bookFound = false;
+//
+//     while (!book_node.currsorIsEmpty()) {
+//         book_node.retrieveKey(key);
+//         if (currentNumber == selectedNumber) {
+//             bookFound = true;
+//             break;
+//         }
+//         book_node.advance();
+//         currentNumber++;
+//     }
+//
+//     if (!bookFound) {
+//         cout << "Book not found." << endl;
+//         return;
+//     }
+//
+//     if (bookFound) {
+//         BookData data;
+//         book_node.search(key);  // Search for the book with the corresponding key
+//         book_node.retrieveData(data);
+//
+//         if (username == "admin") {
+//             displayDetailsAdmin(data, key);  // Pass the key to the admin display function
+//         } else {
+//             displayDetailsUser(data);
+//         }
+//     } else {
+//         cout << "Book not found." << endl;
+//     }
+// }
+
+void Book::promptForBookAction() {
+    int selectedNumber;
+    cout << "Please select the book number on which you would like to perform the action: \n";
+    cin >> selectedNumber;
+
+    book_node.toFirst();
+    int currentNumber = 1; // Start from the first book
+    BookData data;
+    bool bookFound = false;
+
+    while (!book_node.currsorIsEmpty()) {
+        if (currentNumber == selectedNumber) {
+            book_node.retrieveData(data); // Retrieve the data of the currently pointed book
+            bookFound = true;
+            break;
+        }
+        book_node.advance();
+        currentNumber++;
+    }
+
+    if (!bookFound) {
+        cout << "Book not found." << endl;
+        return;
+    }
+
+    if (bookFound) {
+        if (username == "admin") {
+            displayDetailsAdmin(data, selectedNumber); // For admin, display book details for potential editing or deleting
+        } else {
             displayDetailsUser(data);
         }
     }
-    else {
-        cout << "There are no books available" << endl;
-    }
 }
+
+
 
 void Book::myReservation() {
-    if (!book_node.isEmpty()) {
-        book_node.toFirst();
-        BookData data;
-        int key;
-        bool chk = false;
-        while (!book_node.currsorIsEmpty()) {
-            book_node.retrieveData(data);
-            book_node.advance();
-            if (data.reservedBy == username) {
-                printData(data);
-                chk = true;
-            }
-        }
-
-        if (!chk)
-            cout << "You don't have a reservation" << endl;
-    }
-    else {
+    if (book_node.isEmpty()) {
         cout << "There are no books available" << endl;
+        return;
+    }
+
+    book_node.toFirst();
+    BookData data;
+    bool hasReservation = false;
+    while (!book_node.currsorIsEmpty()) {
+        book_node.retrieveData(data);
+        if (data.reservedBy == username) {
+            printData(data);
+            hasReservation = true;
+        }
+        book_node.advance();
+    }
+
+    if (!hasReservation) {
+        cout << "You don't have any reservations" << endl;
     }
 }
 
-void Book::printData(BookData data) {
-    cout << "Book Name: " << data.name << endl;
-    cout << "Category Name: " << data.category << endl;
-    cout << "Price: " << data.price << endl;
-    cout << "Author: " << data.author << endl;
+void Book::printData(const BookData&data) {
+    cout << "Book Name: " << data.name << endl
+            << "Category Name: " << data.category << endl
+            << "Price: " << data.price << endl
+            << "Author: " << data.author << endl;
 
     if (username == "admin") {
-        cout << "Is Reserved: " << data.isReserved << endl;
-        cout << "Reserved By: " << data.reservedBy << endl;
+        cout << "Is Reserved: " << (data.isReserved ? "Yes" : "No") << endl;
+        cout << "Reserved By: " << (data.isReserved ? data.reservedBy : "N/A") << endl;
     }
 }
+
+
+void Book::loadFromCSV(const string& filename) {
+    const int MAX_ROWS = 100;
+    const int MAX_COLS = 6;
+    std::string data[MAX_ROWS][MAX_COLS];
+    int rowCount, colCount;
+
+    try {
+        readCSV<MAX_COLS>(filename, data, rowCount, colCount);
+        for (int i = 0; i < rowCount; ++i) {
+            string name = data[i][0];
+            string category = data[i][1];
+            float price = 0.0f;
+            string author = data[i][3];
+
+            try {
+                price = std::stof(data[i][2]);
+            } catch(const std::exception& e) {
+                cerr << "Error converting price for book '" << name << "' with price string '" << data[i][2] << "': " << e.what() << endl;
+                continue;
+            }
+
+            if (!name.empty()) {
+                insert(name, category, price, author);
+            }
+        }
+    } catch (const std::exception& e) {
+        cerr << "Error reading file: " << filename << " - " << e.what() << endl;
+    }
+}
+
+
+
+void Book::saveToCSV(const string& filename) {
+    std::string data[MAX_ROWS][BOOK_MAX_COLS];
+    int rowCount = 0;
+
+    book_node.toFirst();
+    BookData bookData;
+    while (!book_node.currsorIsEmpty() && rowCount < MAX_ROWS) {
+        book_node.retrieveData(bookData);
+        data[rowCount][0] = bookData.name;
+        data[rowCount][1] = bookData.category;
+        data[rowCount][2] = std::to_string(bookData.price); // Convert float to string
+        data[rowCount][3] = bookData.author;
+        // Add more fields if your book data has more columns
+
+        rowCount++;
+        book_node.advance();
+    }
+
+    writeCSV<BOOK_MAX_COLS>(filename, data, rowCount, BOOK_MAX_COLS);
+}
+
+
