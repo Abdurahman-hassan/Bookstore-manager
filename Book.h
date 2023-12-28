@@ -40,13 +40,14 @@ public:
 	bool serach(int&);
 	bool serach(const string&);
 	int size();
-	void loadData();
 	void printAll();
 	void promptForBookAction();
 	void myReservation();
 	void printData(const BookData& data);
 	void saveToCSV(const string& filename);
 	void loadFromCSV(const string& filename);
+	void logout();
+	void reloadBookCollection();
 
 private:
 	LinkedListUtils<BookData> book_node;

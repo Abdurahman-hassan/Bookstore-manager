@@ -104,10 +104,6 @@ int Book::size() {
     return book_node.listSize();
 }
 
-
-void Book::loadData() {
-}
-
 void Book::displayAdmin() {
     int choice;
     cout << "Select the action you would like to perform: \n"
