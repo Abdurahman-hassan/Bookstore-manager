@@ -4,8 +4,10 @@
 #include <iostream>
 using namespace std;
 
+template <typename T>
 class QueueUtils {
 private:
+    T *queue;
     int front;
     int rear;
     int size;
@@ -16,13 +18,13 @@ public:
     ~QueueUtils();
     QueueUtils(const QueueUtils &q);
 
-    void enqueue(int item);
-    int dequeue();
-    bool isEmpty();
-    bool isFull();
-    void display();
+    void enqueue(T item);
+    T dequeue();
+    bool isEmpty() const;
+    bool isFull() const;
+    void display() const;
 };
 
-#include "Queue.tpp"
+#include "QueueUtils.tpp" // Including implementation
 
 #endif // QUEUEUTILS_H
