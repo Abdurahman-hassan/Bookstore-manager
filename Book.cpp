@@ -253,8 +253,15 @@ void Book::editBook(BookData&data, int key) {
     }
 }
 
-void Book::deleteBook(int key) {
-    if (book_node.search(key)) {
+void Book::deleteBook(int bookNumber) {
+    int currentNumber = 1;
+    book_node.toFirst();
+    while (!book_node.currsorIsEmpty() && currentNumber != bookNumber) {
+        book_node.advance();
+        currentNumber++;
+    }
+
+    if (currentNumber == bookNumber) {
         book_node.deleteNode();
         cout << "The book has been deleted successfully\n";
     } else {
