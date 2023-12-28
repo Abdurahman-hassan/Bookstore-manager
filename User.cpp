@@ -122,10 +122,6 @@ int User::size() {
     return user_node.listSize();
 }
 
-
-void User::loadData() {
-}
-
 void User::loadFromCSV(const string& filename) {
     std::string data[MAX_ROWS][USER_MAX_COLS];
     int rowCount, colCount;
