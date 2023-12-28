@@ -24,9 +24,11 @@ void Book::display() {
     char actionChoice = 'Y';
     while (toupper(actionChoice) == 'Y') {
         (username == "admin") ? displayAdmin() : displayUser();
-        cout << "Would you like to take another action? (Y/ anykey for exit)\n";
+        cout << "Would you like to take another action? (Y/ Anykey for exit)\n";
         cin >> actionChoice;
-        cout << "Thank you for using our system\n";
+        if (toupper(actionChoice) != 'Y') {
+            logout();
+        }
     }
 }
 
@@ -67,7 +69,7 @@ void Book::reserveBook(int&key) {
         data.isReserved = true;
         data.reservedBy = username;
         book_node.updateData(data);
-        cout << "The book has been  " << endl;
+        cout << "The book has been updated" << endl;
     }
     else {
         cout << "Not Found\n";
@@ -189,7 +191,7 @@ void Book::userSearchBook() {
 }
 
 
-void Book::displayDetailsAdmin(BookData&data, int key) {
+void Book::displayDetailsAdmin(BookData& data, int key) {
     printData(data);
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -199,24 +201,28 @@ void Book::displayDetailsAdmin(BookData&data, int key) {
                                  "3) Back To Home\n");
 
     switch (choice) {
-        case 1: editBook(data, key);
-            break;
-        case 2: deleteBook(key);
-            break;
-        case 3: break; // Return to previous menu
-        default: cout << "Invalid choice\n";
-            break;
+        case 1:
+            editBook(data, key);
+        break;
+        case 2:
+            deleteBook(key);
+        break;
+        case 3:
+                break;
+        default:
+            cout << "Invalid choice\n";
+        break;
     }
 }
 
 void Book::editBook(BookData&data, int key) {
     string name, category, author;
     float price;
-    cout << "Enter Book Name: ";
+    cout << "Enter the new Book Name: ";
     cin >> name;
-    cout << "Enter Category Name: ";
+    cout << "Enter the new Category Name: ";
     cin >> category;
-    cout << "Enter Author Name: ";
+    cout << "Enter the new Author Name: ";
     cin >> author;
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -246,6 +252,7 @@ void Book::deleteBook(int key) {
     }
     saveToCSV("database/books_database.csv");
 }
+
 
 void Book::displayDetailsUser(BookData&data) {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -457,5 +464,13 @@ void Book::saveToCSV(const string& filename) {
     writeCSV<BOOK_MAX_COLS>(filename, data, rowCount, BOOK_MAX_COLS);
 }
 
+void Book::logout() {
+    cout << "Thank you for using our system\n";
+    exit(0);
+}
+
+void Book::reloadBookCollection() {
+    book_node.makeListEmpty();
     loadFromCSV("database/books_database.csv"); // Reload data from CSV
+}
 
