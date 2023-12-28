@@ -445,8 +445,6 @@ void Book::loadFromCSV(const string& filename) {
     }
 }
 
-
-
 void Book::saveToCSV(const string& filename) {
     std::string data[MAX_ROWS][BOOK_MAX_COLS];
     int rowCount = 0;
@@ -457,9 +455,8 @@ void Book::saveToCSV(const string& filename) {
         book_node.retrieveData(bookData);
         data[rowCount][0] = bookData.name;
         data[rowCount][1] = bookData.category;
-        data[rowCount][2] = std::to_string(bookData.price); // Convert float to string
+        data[rowCount][2] = to_string(bookData.price);
         data[rowCount][3] = bookData.author;
-        // Add more fields if your book data has more columns
 
         rowCount++;
         book_node.advance();
