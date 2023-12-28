@@ -426,14 +426,15 @@ void Book::loadFromCSV(const string& filename) {
         for (int i = 0; i < rowCount; ++i) {
             string name = data[i][0];
             string category = data[i][1];
-            float price = 0.0f;
+            string priceStr = data[i][2];
             string author = data[i][3];
+            float price = 0.0f;
 
             try {
-                price = std::stof(data[i][2]);
-            } catch(const std::exception& e) {
-                cerr << "Error converting price for book '" << name << "' with price string '" << data[i][2] << "': " << e.what() << endl;
-                continue;
+                price = stof(priceStr);
+            } catch(const exception& e) {
+                cerr << "Error converting price for book '" << name << "' with price string '" << priceStr << "': " << e.what() << endl;
+                continue; // Skip this entry and continue with the next
             }
 
             if (!name.empty()) {
