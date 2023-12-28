@@ -200,7 +200,6 @@ void Book::userSearchBook() {
     }
 }
 
-
 void Book::displayDetailsAdmin(BookData& data, int key) {
     printData(data);
 
@@ -240,17 +239,6 @@ void Book::editBook(BookData&data, int key) {
 
     update(name, category, price, author);
     cout << "The book has been updated successfully\n";
-
-    if (book_node.search(key)) {
-        // Update the book data based on user input
-        data.name = (name != "") ? name : data.name;
-        data.category = (category != "") ? category : data.category;
-        data.price = (price > 0) ? price : data.price;
-        data.author = (author != "") ? author : data.author;
-        book_node.updateData(data);  // Update the book with the new data
-    } else {
-        cout << "Book not found for editing." << endl;
-    }
 }
 
 void Book::deleteBook(int bookNumber) {
