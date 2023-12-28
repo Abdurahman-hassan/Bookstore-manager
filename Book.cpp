@@ -308,58 +308,17 @@ void Book::printAll() {
     promptForBookAction();
 }
 
-// void Book::promptForBookAction() {
-//     int selectedNumber;
-//     cout << "Please select the book number on which you would like to perform the action: \n";
-//     cin >> selectedNumber;
-//
-//     // Convert selected number to corresponding key
-//     book_node.toFirst();
-//     int currentNumber = 1; // Start from the first book
-//     int key;
-//     bool bookFound = false;
-//
-//     while (!book_node.currsorIsEmpty()) {
-//         book_node.retrieveKey(key);
-//         if (currentNumber == selectedNumber) {
-//             bookFound = true;
-//             break;
-//         }
-//         book_node.advance();
-//         currentNumber++;
-//     }
-//
-//     if (!bookFound) {
-//         cout << "Book not found." << endl;
-//         return;
-//     }
-//
-//     if (bookFound) {
-//         BookData data;
-//         book_node.search(key);  // Search for the book with the corresponding key
-//         book_node.retrieveData(data);
-//
-//         if (username == "admin") {
-//             displayDetailsAdmin(data, key);  // Pass the key to the admin display function
-//         } else {
-//             displayDetailsUser(data);
-//         }
-//     } else {
-//         cout << "Book not found." << endl;
-//     }
-// }
-
 void Book::promptForBookAction() {
     int bookNumber = getValidNumber<int>("Enter the book number to view details: ");
 
-    book_node.toFirst();
-    int currentNumber = 1; // Start from the first book
-    BookData data;
+    int currentNumber = 1;
     bool bookFound = false;
+    BookData data;
 
+    book_node.toFirst();
     while (!book_node.currsorIsEmpty()) {
-        if (currentNumber == selectedNumber) {
-            book_node.retrieveData(data); // Retrieve the data of the currently pointed book
+        if (currentNumber == bookNumber) {
+            book_node.retrieveData(data); // Retrieve the data of the selected book
             bookFound = true;
             break;
         }
@@ -367,21 +326,16 @@ void Book::promptForBookAction() {
         currentNumber++;
     }
 
-    if (!bookFound) {
-        cout << "Book not found." << endl;
-        return;
-    }
-
     if (bookFound) {
         if (username == "admin") {
-            displayDetailsAdmin(data, selectedNumber); // For admin, display book details for potential editing or deleting
+            displayDetailsAdmin(data, currentNumber);
         } else {
             displayDetailsUser(data);
         }
+    } else {
+        cout << "Book not found." << endl;
     }
 }
-
-
 
 void Book::myReservation() {
     if (book_node.isEmpty()) {
