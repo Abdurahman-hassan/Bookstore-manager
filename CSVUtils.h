@@ -18,6 +18,6 @@ void writeCSV(const std::string&filename, const std::string data[][MAX_COLS], in
 template<size_t MAX_COLS>
 void readCSV(const std::string&filename, std::string data[][MAX_COLS], int&rowCount, int&colCount);
 
-#include "CSVUtils.tpp" // Include the implementation file
+#include "CSVUtils.tpp"
 
 #endif // CSV_UTILS_H
