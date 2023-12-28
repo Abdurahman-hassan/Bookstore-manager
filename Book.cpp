@@ -282,6 +282,9 @@ void Book::reserveBook(BookData&data) {
 }
 
 void Book::printAll() {
+
+    reloadBookCollection(); // Reload data from CSV
+
     if (book_node.isEmpty()) {
         cout << "There are no books available" << endl;
         return;
