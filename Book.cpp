@@ -1,5 +1,6 @@
 #include "Book.h"
 #include "CSVUtils.h"
+#include "InputUtils.h"
 
 using namespace std;
 
@@ -105,12 +106,12 @@ int Book::size() {
 }
 
 void Book::displayAdmin() {
-    int choice;
-    cout << "Select the action you would like to perform: \n"
-            << "1) Search\n"
-            << "2) Display All\n"
-            << "3) Add\n";
-    cin >> choice;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    int choice = getValidNumber<int>("Select the action you would like to perform: \n"
+                                 "1) Search\n"
+                                 "2) Display All\n"
+                                 "3) Add\n"
+                                 "4) Logout\n");
 
     switch (choice) {
         case 1: adminSearchBook();
@@ -145,19 +146,21 @@ void Book::addBook() {
     cin >> category;
     cout << "Enter Author Name: ";
     cin >> author;
-    cout << "Enter Price: ";
-    cin >> price;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    price = getValidNumber<float>("Enter Price: ");
+
     insert(name, category, price, author);
     cout << "Book added successfully\n";
 }
 
 void Book::displayUser() {
-    int choice;
-    cout << "Select the action you would like to perform: \n"
-            << "1) Search\n"
-            << "2) Display All\n"
-            << "3) My Reservation\n";
-    cin >> choice;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    int choice = getValidNumber<int>("Select the action you would like to perform: \n"
+                                 "1) Search\n"
+                                 "2) Display All\n"
+                                 "3) My Reservation\n"
+                                 "4) Logout\n");
 
     switch (choice) {
         case 1: userSearchBook();
@@ -188,12 +191,12 @@ void Book::userSearchBook() {
 
 void Book::displayDetailsAdmin(BookData&data, int key) {
     printData(data);
-    int choice;
-    cout << "Select the action you would like to perform: \n"
-            << "1) Edit\n"
-            << "2) Delete\n"
-            << "3) Back To Home\n";
-    cin >> choice;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    int choice = getValidNumber<int>("Select the action you would like to perform: \n"
+                                 "1) Edit\n"
+                                 "2) Delete\n"
+                                 "3) Back To Home\n");
 
     switch (choice) {
         case 1: editBook(data, key);
@@ -215,8 +218,10 @@ void Book::editBook(BookData&data, int key) {
     cin >> category;
     cout << "Enter Author Name: ";
     cin >> author;
-    cout << "Enter Price: ";
-    cin >> price;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    price = getValidNumber<float>("Enter Price: ");
+
     update(name, category, price, author);
     cout << "The book has been updated successfully\n";
 
@@ -243,11 +248,10 @@ void Book::deleteBook(int key) {
 }
 
 void Book::displayDetailsUser(BookData&data) {
-    int choice;
-    cout << "Select the action you would like to perform: \n"
-            << "1) Reserve\n"
-            << "2) Back To Home\n";
-    cin >> choice;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    int choice = getValidNumber<int>("Select the action you would like to perform: \n"
+                                 "1) Reserve\n"
+                                 "2) Back To Home\n");
 
     switch (choice) {
         case 1: reserveBook(data);
@@ -331,9 +335,7 @@ void Book::printAll() {
 // }
 
 void Book::promptForBookAction() {
-    int selectedNumber;
-    cout << "Please select the book number on which you would like to perform the action: \n";
-    cin >> selectedNumber;
+    int bookNumber = getValidNumber<int>("Enter the book number to view details: ");
 
     book_node.toFirst();
     int currentNumber = 1; // Start from the first book
