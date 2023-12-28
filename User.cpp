@@ -1,6 +1,7 @@
 #include <iostream>
 #include "User.h"
 #include "CSVUtils.h"
+#include "InputUtils.h"
 
 using namespace std;
 using std::string;
@@ -16,60 +17,70 @@ User::~User() {
 }
 
 
-bool User::display(string&username, string&job_title) {
-    string password;
+bool User::display(string& username, string& job_title) {
+    string input, password;
     char ask = 'N';
     int choose = 0;
     bool found;
-    do {
-        cout << "Select Authentication: \n" << "1)Login \n" << "2)Register a new Account\n";
-        cin >> choose;
 
+    do {
+        choose = getValidNumber<int>("Select Authentication: \n1)Login \n2)Register a new Account\n");
         if (choose == 1) {
             cout << "Enter Username: ";
-            cin >> username;
+            getline(cin, username);
             cout << "Enter Password: ";
-            cin >> password;
+            getline(cin, password);
 
             found = serach(username, password);
             if (!found) {
-                cout << "User Not Found \n";
-                cout << "Would you like to login again?(Y/N)" << endl;
-                cin >> ask;
-            }
-            else {
+                if (serach(username)) {
+                    // User exists, but password is incorrect
+                    cout << "Incorrect password for existing user. Would you like to login again? (Y/N)" << endl;
+                } else {
+                    // User does not exist
+                    cout << "User Not Found. Would you like to login again? (Y/N)" << endl;
+                }
+                getline(cin, input);
+                ask = !input.empty() ? input[0] : 'N';
+            } else {
                 UserData data;
                 user_node.retrieveData(data);
                 cout << "\n'" << data.username << "' Welcome To Our Bookstore \n";
-                break;
+                return true;
             }
-        }
-
-        else if (choose == 2) {
+        } else if (choose == 2) {
             cout << "Please Enter the username: ";
-            cin >> username;
+            getline(cin, username);
             cout << "Enter Password: ";
-            cin >> password;
-            cout << "please Enter your job title: ";
-            cin >> job_title;
+            getline(cin, password);
+            cout << "Please Enter your job title: ";
+            getline(cin, job_title);
+
+            if (username.empty() || password.empty() || job_title.empty()) {
+                cout << "Username or password cannot be empty. Would you like to try again? (Y/N)" << endl;
+                getline(cin, input);
+                ask = !input.empty() ? input[0] : 'N';
+                continue;
+            }
 
             found = serach(username);
             if (found) {
-                cout << "This User Already Exist \n" << endl;
-                cout << "Would you like to Register again?(Y/N)" << endl;
-                cin >> ask;
-            }
-            else {
-                found = true;
+                cout << "This User Already Exists. Would you like to try logging in? (Y/N)" << endl;
+                getline(cin, input);
+                ask = !input.empty() ? input[0] : 'N';
+                if (ask == 'Y' || ask == 'y') {
+                    continue; // Redirect to login
+                }
+            } else {
                 insert(username, password, job_title);
                 cout << "\n'" << username << "' Welcome To Bookstore \n";
-                saveToCSV("users.csv");
+                saveToCSV("database/users.csv");
+                return true;
             }
         }
-    }
-    while (ask != 'N' && ask != 'n');
+    } while (ask == 'Y' || ask == 'y');
 
-    return found;
+    return false;
 }
 
 
