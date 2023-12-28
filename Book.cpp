@@ -134,7 +134,13 @@ void Book::adminSearchBook() {
     cout << "Enter Book Name: ";
     cin >> name;
     if (serach(name)) {
-        // Display book details for admin
+        cout << "The book has been found successfully in our system\n";
+        BookData data;
+        book_node.retrieveData(data);
+
+        int key;
+        book_node.retrieveKey(key);
+        displayDetailsAdmin(data, key);
     }
     else {
         cout << "Not Found\n";
