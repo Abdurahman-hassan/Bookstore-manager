@@ -12,12 +12,12 @@ Book::Book(string&user, string&visitor) : username(user), visitorName(visitor) {
 }
 
 Book::~Book() {
-    saveToCSV("books_database.csv");
+    saveToCSV("database/books_database.csv");
     book_node.makeListEmpty();
 }
 
 void Book::initializeBookCollection() {
-    loadFromCSV("books_database.csv");
+    loadFromCSV("database/books_database.csv");
 }
 
 void Book::display() {
@@ -45,7 +45,7 @@ void Book::insert(const string&name, const string&category, const float&price, c
     data.price = price;
     data.author = author;
     book_node.insertEnd(key, data);
-    saveToCSV("books_database.csv");
+    saveToCSV("database/books_database.csv");
 }
 
 void Book::update(const string&name, const string&category, const float&price, const string&author) {
@@ -55,7 +55,7 @@ void Book::update(const string&name, const string&category, const float&price, c
     data.price = (price > 0) ? price : data.price;
     data.author = (author != "") ? author : data.author;
     book_node.updateData(data);
-    saveToCSV("books_database.csv");
+    saveToCSV("database/books_database.csv");
 }
 
 void Book::reserveBook(int&key) {
@@ -72,7 +72,7 @@ void Book::reserveBook(int&key) {
     else {
         cout << "Not Found\n";
     }
-    saveToCSV("books_database.csv");
+    saveToCSV("database/books_database.csv");
 }
 
 bool Book::serach(int&key) {
@@ -244,7 +244,7 @@ void Book::deleteBook(int key) {
     } else {
         cout << "Book not found for deletion." << endl;
     }
-    saveToCSV("books_database.csv");
+    saveToCSV("database/books_database.csv");
 }
 
 void Book::displayDetailsUser(BookData&data) {
@@ -457,4 +457,5 @@ void Book::saveToCSV(const string& filename) {
     writeCSV<BOOK_MAX_COLS>(filename, data, rowCount, BOOK_MAX_COLS);
 }
 
+    loadFromCSV("database/books_database.csv"); // Reload data from CSV
 
