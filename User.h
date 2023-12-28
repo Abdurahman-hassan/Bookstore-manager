@@ -26,7 +26,6 @@ public:
 	bool serach(const string&);
 	bool serach(const string&, const string&);
 	int size();
-	void loadData();
 	void saveToCSV(const string& filename);
 	void loadFromCSV(const string& filename);
 private:
