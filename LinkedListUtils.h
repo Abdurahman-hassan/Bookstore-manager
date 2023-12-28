@@ -40,6 +40,7 @@ public:
     void deleteNode();
     void deleteFirst();
     void deleteEnd();
+    void deleteNode(const int &key);
     void makeListEmpty();
 
 // =========== Utils functions ===========

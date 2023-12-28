@@ -132,6 +132,36 @@ void LinkedListUtils<L>::insertEnd(const int &k, const L &d) {
 }
 
 template <typename L>
+void LinkedListUtils<L>::deleteNode(const int &key) {
+    // Node* temp = head;
+    // Node* prev = nullptr;
+    toFirst();
+    // Case: List is empty
+    if (cursor == nullptr) return;
+
+    // Case: Node to delete is head
+    if (cursor != nullptr && cursor->key == key) {
+        head = cursor->next;   // Changed head
+        delete cursor;         // free old head
+        return;
+    }
+
+    // Search for the key to be deleted
+    while (cursor != nullptr && cursor->key != key) {
+        prev = cursor;
+        cursor = cursor->next;
+    }
+
+    // If key was not present in linked list
+    if (cursor == nullptr) return;
+
+    // Unlink the node from linked list
+    prev->next = cursor->next;
+    delete cursor;
+}
+
+
+template <typename L>
 void LinkedListUtils<L>::deleteNode() {
     Node* temp;
 
