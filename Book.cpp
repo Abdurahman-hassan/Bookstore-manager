@@ -122,6 +122,8 @@ void Book::displayAdmin() {
             break;
         case 3: addBook();
             break;
+        case 4: logout();
+            break;
         default: cout << "Invalid choice\n";
             break;
     }
@@ -170,6 +172,8 @@ void Book::displayUser() {
         case 2: printAll();
             break;
         case 3: myReservation();
+            break;
+        case 4: logout();
             break;
         default: cout << "Invalid choice\n";
             break;
