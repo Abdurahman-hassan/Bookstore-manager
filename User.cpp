@@ -134,6 +134,10 @@ int User::size() {
 }
 
 void User::loadFromCSV(const string& filename) {
+
+    // skip the first line
+    locale::global(locale("C"));
+
     std::string data[MAX_ROWS][USER_MAX_COLS];
     int rowCount, colCount;
 
