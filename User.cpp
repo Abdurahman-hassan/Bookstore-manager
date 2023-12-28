@@ -7,11 +7,11 @@ using std::string;
 
 
 User::User() {
-    loadFromCSV("users.csv");
+    loadFromCSV("database/users.csv");
 }
 
 User::~User() {
-    saveToCSV("users.csv");
+    saveToCSV("database/users.csv");
     user_node.makeListEmpty();
 }
 
@@ -86,7 +86,7 @@ void User::insert(const string&username, const string&password, const string&job
     data.username = username;
     data.password = password;
     user_node.insertEnd(key, data);
-    saveToCSV("users.csv");
+    saveToCSV("database/users.csv");
 }
 
 
