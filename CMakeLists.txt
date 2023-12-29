@@ -3,4 +3,4 @@ project(Bookstore_manager)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Bookstore_manager main.cpp Book.cpp User.cpp)
+add_executable(Bookstore_manager main.cpp Book.cpp BookSold.cpp User.cpp)
