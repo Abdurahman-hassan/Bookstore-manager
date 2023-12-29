@@ -1,6 +1,7 @@
 #include "Book.h"
 #include "CSVUtils.h"
 #include "InputUtils.h"
+#include "BookSold.h"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ Book::Book() {
 
 Book::Book(string&user, string&visitor) : username(user), visitorName(visitor) {
     initializeBookCollection();
+    //sold_node = BookSold(user, visitor);
 }
 
 Book::~Book() {
@@ -33,9 +35,9 @@ void Book::display() {
 }
 
 
-void Book::insert(const string&name, const string&category,
-                  const float&price, const string&author, bool isReserved,
-                  const string&reservedBy, const string&reviews, float rating, int ratingCount) {
+void Book::loadList(const string& name, const string& category,
+    const float& price, const int& qty, const string& author,
+    const string& reviews, float rating, int ratingCount, const float& total) {
     BookData data, curr;
     int key = 0;
     if (!book_node.currsorIsEmpty()) {
@@ -48,8 +50,30 @@ void Book::insert(const string&name, const string&category,
     data.category = category;
     data.price = price;
     data.author = author;
-    data.isReserved = isReserved;
-    data.reservedBy = reservedBy;
+    data.qty = qty;
+    data.reviews = reviews;
+    data.ratings = rating;
+    data.ratingCount = ratingCount;
+    data.total = total;
+    book_node.insertEnd(key, data);
+}
+
+void Book::insert(const string&name, const string&category,
+                  const float&price, const int& qty, const string&author,
+                  const string&reviews, float rating, int ratingCount) {
+    BookData data, curr;
+    int key = 0;
+    if (!book_node.currsorIsEmpty()) {
+        book_node.toEnd();
+        book_node.retrieveKey(key);
+    }
+
+    key++;
+    data.name = name;
+    data.category = category;
+    data.price = price;
+    data.author = author;
+    data.qty = qty;
     data.reviews = reviews;
     data.ratings = rating;
     data.ratingCount = ratingCount;
@@ -58,18 +82,21 @@ void Book::insert(const string&name, const string&category,
 }
 
 void Book::update(const string&name, const string&category, const float&price,
-                  const string&author, bool isReserved, const string&reservedBy,
+                  const string&author, int qty,
                   const string&reviews, float rating, int ratingCount) {
+    
+    float total = (qty <= 0) ? price * defaultQty : (qty == defaultQty)?0: (defaultQty-qty) * price;
+
     BookData data;
     data.name = (name != "") ? name : data.name;
     data.category = (category != "") ? category : data.category;
     data.price = (price > 0) ? price : data.price;
     data.author = (author != "") ? author : data.author;
-    data.isReserved = isReserved;
-    data.reservedBy = reservedBy;
+    data.qty = qty;
     data.reviews = reviews;
     data.ratings = rating;
     data.ratingCount = ratingCount;
+    data.total = total;
     book_node.updateData(data);
     saveToCSV("database/books_database.csv");
 }
@@ -83,15 +110,15 @@ void Book::reserveBook(int key) {
     BookData data;
     book_node.retrieveData(data);
 
-    if (data.isReserved && data.reservedBy == username) {
-        cout << "You have already reserved this book." << endl;
-    } else if (data.isReserved) {
-        cout << "This book is already reserved by another user." << endl;
+     if (data.qty <=0) {
+        cout << "This book is out of stock." << endl;
     } else {
-        data.isReserved = true;
-        data.reservedBy = username;
+        data.qty--;
+        float total = (data.qty <= 0) ? data.price * defaultQty : (data.qty == defaultQty) ? 0 : (defaultQty - data.qty) * data.price;
+        data.total = total;
         book_node.updateData(data);
-        cout << "The book has been reserved successfully." << endl;
+        sold_node.insert(data.name, username, data.price, data.author);
+        cout << "The book has been Sold successfully." << endl;
         saveToCSV("database/books_database.csv");
     }
 }
@@ -185,7 +212,7 @@ void Book::addBook() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     price = getValidNumber<float>("Enter Price: ");
 
-    insert(name, category, price, author, false, "", "", 0.0f, 0);
+    insert(name, category, price, defaultQty, author, "", 0.0f, 0);
     cout << "Book added successfully\n";
 }
 
@@ -195,9 +222,9 @@ void Book::displayUser() {
         "1) Book Search\n"
         "2) Display All Books\n"
         "3) Advanced Search\n"
-        "4) My Reservation\n"
+        "4) My Sold\n"
         // "5) Rate and Review Books\n"
-        "6) Logout\n");
+        "5) Logout\n");
 
     switch (choice) {
         case 1: userSearchBook();
@@ -269,8 +296,7 @@ void Book::editBook(BookData&data, int key) {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     price = getValidNumber<float>("Enter Price: ");
 
-    update(name, category, price, author, data.isReserved, data.reservedBy, data.reviews, data.ratings,
-           data.ratingCount);
+    update(name, category, price, author, data.qty, data.reviews, data.ratings, data.ratingCount);
     cout << "The book has been updated successfully\n";
 }
 
@@ -296,7 +322,7 @@ void Book::deleteBook(int bookNumber) {
 void Book::displayDetailsUser(BookData&data) {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     int choice = getValidNumber<int>("Select the action you would like to perform: \n"
-        "1) Reserve\n"
+        "1) Sold\n"
         "2) Back To Home\n");
 
     switch (choice) {
@@ -312,20 +338,19 @@ void Book::displayDetailsUser(BookData&data) {
 
 
 void Book::reserveBook(BookData& data) {
-    if (data.isReserved && data.reservedBy == username) {
-        cout << "You have already reserved this book." << endl;
-        return;
-    } else if (data.isReserved) {
-        cout << "This book is already reserved by another user." << endl;
+    if (data.qty <=0) {
+        cout << "This book is out of stock." << endl;
         return;
     }
 
-    data.isReserved = true;
-    data.reservedBy = username;
+    data.qty--;
+    float total = (data.qty <= 0) ? data.price * defaultQty : (data.qty == defaultQty) ? 0 : (defaultQty - data.qty) * data.price;
+    data.total = total;
     int key;
     book_node.retrieveKey(key); // Retrieve the key of the current book
     book_node.updateData(data); // Update the data in the linked list
-    cout << "The book has been reserved successfully." << endl;
+    sold_node.insert(data.name, username, data.price, data.author);
+    cout << "The book has been sold successfully." << endl;
     saveToCSV("database/books_database.csv"); // Save changes to CSV
 }
 
@@ -346,8 +371,8 @@ void Book::printAll() {
         book_node.retrieveKey(key);
         book_node.retrieveData(data);
         cout << bookNumber << ") Book Name: " << data.name;
-        if (username == "admin" && data.isReserved) {
-            cout << " (Reserved)";
+        if (username == "admin" && data.qty<=0) {
+            cout << " (Out of Stock)";
         }
         cout << endl;
         book_node.advance();
@@ -389,43 +414,38 @@ void Book::promptForBookAction() {
 
 void Book::myReservation() {
     if (book_node.isEmpty()) {
-        cout << "There are no books available" << endl;
+        cout << "There are no books sold available" << endl;
         return;
     }
 
-    book_node.toFirst();
-    BookData data;
-    bool hasReservation = false;
-    while (!book_node.currsorIsEmpty()) {
-        book_node.retrieveData(data);
-        if (data.reservedBy == username) {
-            printData(data);
-            hasReservation = true;
-        }
-        book_node.advance();
+    if (!sold_node.checkHasSold(username)) {
+        cout << "You don't have any solds" << endl;
     }
-
-    if (!hasReservation) {
-        cout << "You don't have any reservations" << endl;
+    else {
+        sold_node.mySold(username);
     }
 }
 
 void Book::printData(const BookData&data) {
+    
     cout << "\nBook Name: " << data.name << endl
             << "Category Name: " << data.category << endl
+            << "Author: " << data.author << endl
             << "Price: " << data.price << endl
-            << "Author: " << data.author << endl;
+            << "Qty Available: " << data.qty << endl
+            << "Qty Sold: " << (defaultQty-data.qty) << endl
+            << "Total Sold: " << data.total << endl;
 
-    if (data.isReserved) {
+    if (username == "admin" && data.qty < defaultQty) {
         cout << "Reviews: " << data.reviews << endl
                 << "Rating: " << data.ratings << "/5" << endl;
     }
 
     // Reserved details if admin
-    if (username == "admin") {
+    /*if (username == "admin") {
         cout << "Is Reserved: " << (data.isReserved ? "Yes" : "No") << endl
                 << "Reserved By: " << (data.isReserved ? data.reservedBy : "N/A") << endl;
-    }
+    }*/
     cout << endl;
 }
 
@@ -447,19 +467,23 @@ void Book::loadFromCSV(const string&filename) {
             string category = data[i][1];
             string priceStr = data[i][2];
             string author = data[i][3];
-            string isReservedStr = data[i][4];
-            string reservedBy = data[i][5];
-            string reviews = data[i][6];
-            string ratingsStr = data[i][7];
-            string ratingCountStr = data[i][8];
+            string qtyStr = data[i][4];
+            string reviews = data[i][5];
+            string ratingsStr = data[i][6];
+            string ratingCountStr = data[i][7];
+            string totalStr = data[i][8];
+            int qty = defaultQty;
             float price = 0.0f;
             float ratings = 0.0f;
             int ratingCount = 0;
-
+            float total = 0.0f;
             try {
-                price = stof(priceStr);
-                ratings = stof(ratingsStr);
-                ratingCount = stoi(ratingCountStr);
+                qty =  (qtyStr == "")? defaultQty : stoi(qtyStr);
+                char* ending;
+                price = strtof(priceStr.c_str(), &ending);//stof(priceStr);
+                ratings = strtof(ratingsStr.c_str(), &ending);
+                ratingCount = strtof(ratingCountStr.c_str(), &ending);
+                total = (totalStr == "")? 0.0f : strtof(totalStr.c_str(), &ending);
             }
             catch (const exception&e) {
                 cerr << "Error converting price for book " << name << "with price string" << priceStr << ": " << e.
@@ -467,10 +491,8 @@ void Book::loadFromCSV(const string&filename) {
                 continue; // Skip this entry and continue with the next
             }
 
-            bool isReserved = (isReservedStr == "Yes");
-
             if (!name.empty()) {
-                insert(name, category, price, author, isReserved, reservedBy, reviews, ratings, ratingCount);
+                loadList(name, category, price, qty, author, reviews, ratings, ratingCount, total);
             }
         }
     }
@@ -491,11 +513,11 @@ void Book::saveToCSV(const string&filename) {
         data[rowCount][1] = bookData.category;
         data[rowCount][2] = to_string(bookData.price);
         data[rowCount][3] = bookData.author;
-        data[rowCount][4] = bookData.isReserved ? "Yes" : "No";
-        data[rowCount][5] = bookData.reservedBy;
-        data[rowCount][6] = bookData.reviews;
-        data[rowCount][7] = to_string(bookData.ratings);
-        data[rowCount][8] = to_string(bookData.ratingCount);
+        data[rowCount][4] = to_string(bookData.qty);
+        data[rowCount][5] = bookData.reviews;
+        data[rowCount][6] = to_string(bookData.ratings);
+        data[rowCount][7] = to_string(bookData.ratingCount);
+        data[rowCount][8] = to_string(bookData.total);
 
         rowCount++;
         book_node.advance();
@@ -596,7 +618,7 @@ void Book::searchByPriceRange() {
 // Generate Reports function
 void Book::generateReports() {
     int choice = getValidNumber<int>(
-        "Report Options:\n1. Total number of books\n2. Books by Category\n3. Reserved Books\nEnter your choice: ");
+        "Report Options:\n1. Total number of books\n2. Books by Category\n3. Books Sold\nEnter your choice: ");
 
     switch (choice) {
         case 1: reportTotalBooks();
@@ -660,7 +682,7 @@ void Book::reportReservedBooks() {
     while (!book_node.currsorIsEmpty()) {
         BookData data;
         book_node.retrieveData(data);
-        if (data.isReserved) {
+        if (data.qty<defaultQty) {
             reservedCount++;
         }
         book_node.advance();

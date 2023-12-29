@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "LinkedListUtils.h"
+#include "BookSold.h"
+
 using namespace std;
 using std::string;
 
@@ -14,11 +16,11 @@ public:
 	string category;
 	float price;
 	string author;
-	bool isReserved;
-	string reservedBy;
+	int qty;
 	string reviews;
 	float ratings = 0.0f;
 	int ratingCount = 0;
+	float total = 0.0f;
 };
 
 class Book
@@ -28,8 +30,9 @@ public:
 	Book(string&, string&);
 	~Book();
 	void initializeBookCollection();
-	void insert(const string&name, const string&category, const float&price, const string&author, bool isReserved, const string&reservedBy, const string&reviews, float rating, int ratingCount);
-	void update(const string&, const string&, const float&, const string&, bool, const string&, const string&, float, int);
+	void loadList(const string&name, const string&category, const float&price, const int& qty, const string&author, const string&reviews, float rating, int ratingCount, const float& total);
+	void insert(const string&name, const string&category, const float&price, const int& qty, const string&author, const string&reviews, float rating, int ratingCount);
+	void update(const string&, const string&, const float&, const string&, int, const string&, float, int);
 	void display();
 	void displayAdmin();
 	void adminSearchBook();
@@ -65,8 +68,10 @@ public:
 
 private:
 	LinkedListUtils<BookData> book_node;
+	BookSold sold_node;
 	string username;
 	string visitorName;
+	int defaultQty = 15;
 
 	// ================== Advanced Search Functions ==================
 	void searchByAuthor();
