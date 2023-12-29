@@ -1,6 +1,7 @@
 #include "BookSold.h"
 #include "CSVUtils.h"
 #include "InputUtils.h"
+#include "StackUtils.h"
 
 using namespace std;
 
@@ -82,29 +83,16 @@ void BookSold::displayUser() {
     }
 }
 
-void BookSold::loadList(const string& bookName, const string& soldBy, const float& price, const string& author) {
+void BookSold::loadList(const string& bookName, const string& soldBy, const float& price, const string& author, int& qty) {
     BookSoldData data, curr;
     int key = 0;
-   /* if (!sold_node.currsorIsEmpty()) {
-        sold_node.toEnd();
-        sold_node.retrieveKey(key);
-    }*/
-
-   // Check if the book has been sold to the user. If true update the quantity (increment by 1)
-    if (checkIsExist(bookName, soldBy, price)) { 
-        updateCount();
-    }
-
-    else {
-        key++;
-        data.bookName = bookName;
-        data.soldBy = soldBy;
-        data.price = price;
-        data.author = author;
-        data.qty = 1;
-        sold_node.insertEnd(key, data);
-    }
-    
+    key++;
+    data.bookName = bookName;
+    data.soldBy = soldBy;
+    data.price = price;
+    data.author = author;
+    data.qty = qty;
+    sold_node.insertEnd(key, data);
 }
 
 void BookSold::insert(const string& bookName, const string& soldBy, const float& price, const string& author) {
@@ -229,6 +217,97 @@ void BookSold::retrieveData(BookSoldData& data) {
     sold_node.retrieveData(data);
 }
 
+
+void BookSold::displayDescending(const string& soldBy) {
+    reloadBookCollection(); // Reload data from CSV
+    StackUtils<BookSoldData> stack;
+    sortDescending(soldBy, stack);
+
+    BookSoldData data;
+    while (!stack.stackIsEmpty())
+    {
+        stack.pop(data);
+        cout << "\nBook Name: " << data.bookName << endl
+            << "Author: " << data.author << endl
+            << "Price: " << data.price << endl
+            << "Qty: " << data.qty << endl
+            << "Total: " << (data.qty * data.price) << endl;
+
+        cout << "-----------------------------------------\n";
+    }
+}
+
+void BookSold::displayAscending(const string& soldBy) {
+    reloadBookCollection(); // Reload data from CSV
+    QueueUtils<BookSoldData> queue;
+    sortAscending(soldBy, queue);
+    BookSoldData data;
+    while (!queue.isEmpty())
+    {
+        data = queue.dequeue();
+        cout << "\nBook Name: " << data.bookName << endl
+            << "Author: " << data.author << endl
+            << "Price: " << data.price << endl
+            << "Qty: " << data.qty << endl
+            << "Total: " << (data.qty * data.price) << endl;
+
+        cout << "-----------------------------------------\n";
+    }
+
+}
+
+
+void BookSold::sortDescending(const string& soldBy, StackUtils<BookSoldData>& stack) {
+    LinkedListUtils<BookSoldData> nodeList;
+    BookSoldData data;
+    sold_node.toFirst();
+    while (!sold_node.currsorIsEmpty())
+    {
+        sold_node.retrieveData(data);
+        if (data.soldBy == soldBy) {
+            nodeList.orderInsert(data.qty, data);
+       }
+        sold_node.advance();
+    }
+    
+    nodeList.toFirst();
+    while (!nodeList.currsorIsEmpty())
+    {
+        nodeList.retrieveData(data);
+        stack.push(data);
+        nodeList.advance();
+    }
+
+    nodeList.makeListEmpty();
+
+}
+
+
+void BookSold::sortAscending(const string& soldBy, QueueUtils<BookSoldData>& queue) {
+    LinkedListUtils<BookSoldData> nodeList;
+    BookSoldData data;
+    sold_node.toFirst();
+    while (!sold_node.currsorIsEmpty())
+    {
+        sold_node.retrieveData(data);
+        if (data.soldBy == soldBy) {
+            nodeList.orderInsert(data.qty, data);
+        }
+        sold_node.advance();
+    }
+
+    nodeList.toFirst();
+    while (!nodeList.currsorIsEmpty())
+    {
+        nodeList.retrieveData(data);
+        queue.enqueue(data);
+        nodeList.advance();
+    }
+
+    nodeList.makeListEmpty();
+}
+
+
 void BookSold::reloadBookCollection() {
     sold_node.makeListEmpty();
     loadFromCSV(); // Reload data from CSV
@@ -267,7 +346,7 @@ void BookSold::loadFromCSV() {
             }
 
             if (!name.empty()) {
-                loadList(name, soldBy, price, author);
+                loadList(name, soldBy, price, author, qty);
             }
         }
     }

@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include "LinkedListUtils.h"
+#include "StackUtils.h"
+#include "QueueUtils.h"
 using namespace std;
 using std::string;
 
@@ -24,7 +26,7 @@ public:
 	BookSold(string&, string&);
 	~BookSold();
 	void initializeBookCollection();
-	void loadList(const string& bookName, const string& soldBy, const float& price, const string& author);
+	void loadList(const string& bookName, const string& soldBy, const float& price, const string& author, int& qty);
 	void insert(const string& bookName, const string& soldBy, const float& price, const string& author);
 	void update(const string& bookName, const string& soldBy, const float& price, const string& author, int& qty);
 	void updateCount();
@@ -39,7 +41,10 @@ public:
 	void mySold(const string& soldBy);
 	bool search(const string& bookName, const float& price, const string& author);
 	void retrieveData(BookSoldData& data);
-
+	void displayDescending(const string& soldBy);
+	void displayAscending(const string& soldBy);
+	void sortDescending(const string& soldBy, StackUtils<BookSoldData>& stack);
+	void sortAscending(const string& soldBy, QueueUtils<BookSoldData>& queue);
 private:
 	LinkedListUtils<BookSoldData> sold_node;
 	string username;
