@@ -266,9 +266,342 @@ CS505 Bookstore Manager Project  Data Structures &amp; Algorithms project from t
    ```
   </details>
 
+   <details>
+    <summary><i>listSize</i></summary>
+     
+   ### int LinkedListUtils<L>::listSize() const
+   - Purpose: Computes the size of the linked list.
+   - Inputs: None.
+   - Outputs: Integer representing the size of the list.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    int LinkedListUtils<L>::listSize() const {
+        int count = 0;
+        Node* temp = head;
+        while (temp != nullptr) {
+            count++;
+            temp = temp->next;
+        }
+        return count;
+    }
+   ```
+  </details>
 
+   <details>
+    <summary><i>insertFirst</i></summary>
+     
+   ### void LinkedListUtils<L>::insertFirst(const int &k, const L &d)
+   - Purpose: Inserts a new node at the beginning of the list.
+   - Inputs: Key and data for the new node.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    void LinkedListUtils<L>::insertFirst(const int &k, const L &d) {
+        Node* temp = new Node;
+        temp->key = k;
+        temp->data = d;
 
-  
+        temp->next = head;
+
+        head = temp;
+        cursor = head;
+        prev = nullptr;
+    }
+   ```
+  </details>
+
+   <details>
+    <summary><i>insertAfter</i></summary>
+     
+   ### void LinkedListUtils<L>::insertAfter(const int &k, const L &d)
+   - Purpose: Inserts a new node after the current node.
+   - Inputs: Key and data for the new node.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    void LinkedListUtils<L>::insertAfter(const int &k, const L &d) {
+        Node* temp = new Node;
+        temp->key = k;
+        temp->data = d;
+
+        temp->next = cursor->next;
+        cursor->next = temp;
+
+        prev = cursor;
+        cursor = temp;
+    }
+   ```
+  </details>
+
+  <details>
+    <summary><i>insertBefore</i></summary>
+     
+   ### void LinkedListUtils<L>::insertBefore(const int &k, const L &d)
+   - Purpose: Inserts a new node before the current node.
+   - Inputs: Key and data for the new node.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    template <typename L>
+    void LinkedListUtils<L>::insertBefore(const int &k, const L &d) {
+        Node* temp = new Node;
+        temp->key = k;
+        temp->data = d;
+
+        temp->next = cursor;
+        prev->next = temp;
+
+        cursor = temp;
+    }
+   ```
+  </details>
+
+  <details>
+    <summary><i>insertEnd</i></summary>
+     
+   ### void LinkedListUtils<L>::insertEnd(const int &k, const L &d)
+   - Purpose: Inserts a new node at the end of the list.
+   - Inputs: Key and data for the new node.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    void LinkedListUtils<L>::insertEnd(const int &k, const L &d) {
+        if (isEmpty())
+            insertFirst(k, d);
+        else {
+            toEnd();
+            insertAfter(k, d);
+        }
+    }
+   ```
+  </details>
+
+  <details>
+    <summary><i>deleteNode</i></summary>
+     
+   ### void LinkedListUtils<L>::deleteNode(const int &key)
+   - Purpose: Deletes a node with a specified key from the list.
+   - Inputs: Key of the node to be deleted.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    void LinkedListUtils<L>::deleteNode(const int &key) {
+       // Node* temp = head;
+       // Node* prev = nullptr;
+       toFirst();
+       // Case: List is empty
+       if (cursor == nullptr) return;
+   
+       // Case: Node to delete is head
+       if (cursor != nullptr && cursor->key == key) {
+           head = cursor->next;   // Changed head
+           delete cursor;         // free old head
+           return;
+       }
+   
+       // Search for the key to be deleted
+       while (cursor != nullptr && cursor->key != key) {
+           prev = cursor;
+           cursor = cursor->next;
+       }
+   
+       // If key was not present in linked list
+       if (cursor == nullptr) return;
+   
+       // Unlink the node from linked list
+       prev->next = cursor->next;
+       delete cursor;
+    }
+   ```
+  </details>
+
+   <details>
+    <summary><i>deleteNode</i></summary>
+     
+   ### void LinkedListUtils<L>::deleteNode()
+   - Purpose: Deletes the current node.
+   - Inputs: None.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    void LinkedListUtils<L>::deleteNode() {
+      Node* temp;
+      
+      if (!currsorIsEmpty()){
+          if (atFirst()) {
+              temp = cursor;
+              cursor = cursor->next;
+              head = cursor;
+              delete temp;
+          } else {
+              temp = cursor;
+              cursor = cursor->next;
+              prev->next = cursor;
+              delete temp;
+          }
+      }
+    }
+   ```
+  </details>
+
+  <details>
+    <summary><i>deleteFirst</i></summary>
+     
+   ### void LinkedListUtils<L>::deleteFirst()
+   - Purpose: Deletes the first node in the list.
+   - Inputs: None.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    void LinkedListUtils<L>::deleteFirst() {
+      if (!isEmpty()) {
+          toFirst();
+          deleteNode();
+      }
+    }
+   ```
+  </details>
+
+  <details>
+    <summary><i>deleteEnd</i></summary>
+     
+   ### void LinkedListUtils<L>::deleteEnd()
+   - Purpose: Deletes the last node in the list.
+   - Inputs: None.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    void LinkedListUtils<L>::deleteEnd() {
+      if (!isEmpty()) {
+          toEnd();
+          deleteNode();
+      }
+    }
+   ```
+  </details>
+
+   <details>
+    <summary><i>makeListEmpty</i></summary>
+     
+   ### void LinkedListUtils<L>::makeListEmpty()
+   - Purpose: Empties the entire linked list.
+   - Inputs: None.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+   void LinkedListUtils<L>::makeListEmpty() {
+      toFirst();
+      while (!isEmpty())
+          deleteNode();
+   }
+   ```
+  </details>
+
+<details>
+    <summary><i>search</i></summary>
+     
+   ### bool LinkedListUtils<L>::search(const int &k)
+   - Purpose: Searches for a node with a specified key in the list.
+   - Inputs: Key to search for.
+   - Outputs: Boolean indicating if the key was found.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+   bool LinkedListUtils<L>::search(const int &k) {
+      bool found = false;
+      toFirst();
+      while (!found && cursor != nullptr) {
+          if (cursor->key == k)
+              found = true;
+          else
+              advance();
+      }
+      return found;
+   }
+   ```
+  </details>
+
+  <details>
+    <summary><i>orderInsert</i></summary>
+     
+   ### void LinkedListUtils<L>::orderInsert(const int &k, const L &d)
+   - Purpose: Inserts a node in ascending order based on the key.
+   - Inputs:  Key and data for the new node.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    void LinkedListUtils<L>::orderInsert(const int &k, const L &d) {
+      toFirst();
+      while (cursor != nullptr && cursor->key < k)
+          advance();
+      if (prev == nullptr)
+          insertFirst(k, d);
+      else
+          insertBefore(k, d);
+    }
+   ```
+  </details>
+
+   <details>
+    <summary><i>traverse</i></summary>
+     
+   ### void LinkedListUtils<L>::traverse()
+   - Purpose: Traverses the list and prints the keys of all nodes.
+   - Inputs:  None.
+   - Outputs: None.
+       
+   ### Implementation
+   ```C++
+    template <typename L>
+    void LinkedListUtils<L>::traverse() {
+      toFirst();
+      while (!currsorIsEmpty()) {
+          cout << cursor->key; //<< " " << cursor->data << endl;
+          advance();
+      }
+    }
+   ```
+  </details>
+
+  <details>
+       <summary><i>Destructor</i></summary>
+        
+   ### LinkedListUtils<L>::~LinkedListUtils()
+   - Purpose: Destructor to free memory by making the list empty.
+   - Inputs:  None.
+   - Outputs: None.
+          
+   ### Implementation
+   ```C++
+      template <typename L>
+      LinkedListUtils<L>::~LinkedListUtils() {
+         makeListEmpty();
+      }
+   ```
+   </details>
 
   
 </details>
