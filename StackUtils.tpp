@@ -201,3 +201,20 @@ void StackUtils<T>::printStack(StackUtils<T>& stack, const string& message) {
 //         s.push(temp);
 //     }
 // }
+
+
+template <typename T>
+T StackUtils<T>::getMin() {
+    if (stackIsEmpty()) {
+        throw std::runtime_error("Stack is empty");
+    }
+
+    T minElement = stack[top];
+    for (int i = 0; i <= top; i++) {
+        if (stack[i] < minElement) {
+            minElement = stack[i];
+        }
+    }
+
+    return minElement;
+}

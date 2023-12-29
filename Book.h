@@ -71,6 +71,9 @@ public:
 	// void displayReviews(int bookKey);
 	// void displayRatings(int bookKey);
 
+	void displayMaxPrice();
+	void displayMinPrice();
+
 private:
 	LinkedListUtils<BookData> book_node;
 	BookSold sold_node;
@@ -88,6 +91,9 @@ private:
 	void reportBooksByCategory();
 	void reportReservedBooks();
 
+	// ================== Stack && Queue Functions ==================
+	float getMinPrice(); // application for Stack
+	float getMaxPrice(); // application for Queue
 };
 
 #endif //BOOK_HEADER_H
