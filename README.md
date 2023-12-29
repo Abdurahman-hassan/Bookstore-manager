@@ -793,6 +793,8 @@ CS505 Bookstore Manager Project  Data Structures &amp; Algorithms project from t
 </details>
 
 
+[//]: # (Book Functions)
+
 
 
 
