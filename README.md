@@ -44,6 +44,9 @@ CS505 Bookstore Manager Project  Data Structures &amp; Algorithms project from t
  - Comprehensive Documentation of Utilized Functions.
  - This section provides an exhaustive breakdown of all functions integrated into the project. Each function is meticulously documented, encompassing its defined purpose, detailed inputs, expected outputs, and precise implementation specifics.
 
+
+[//]: # (Linked List Functions)
+
 <details>
   <summary><h3><b>Linked List Functions</b></h3></summary>
    
@@ -602,10 +605,192 @@ CS505 Bookstore Manager Project  Data Structures &amp; Algorithms project from t
       }
    ```
    </details>
-
-  
+ 
 </details>
 
+[//]: # (Stack Functions)
+
+<details>
+  <summary><h3><b>Stack Functions</b></h3></summary>
+   
+  <details>
+    <summary><i>Constructor</i></summary>
+    
+   ### StackUtils<T>::StackUtils(int size) 
+   - Purpose: Constructor for the Stack class with an argument specifying the size of the stack.
+   - Inputs: Size of the stack.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   StackUtils<T>::StackUtils(int size) {
+       stack_size = size;
+       top = -1; /* top is -1 at the beginning */
+       count = 0;
+       stack = new T[stack_size];
+   }
+   ```
+  </details>
+
+  <details>
+    <summary><i>Copy Constructor</i></summary>
+    
+   ### StackUtils<T>::StackUtils(const StackUtils<T> &original)
+   - Purpose: Copy constructor to copy the original stack to a new one without changing the original stack.
+   - Inputs: The original stack to be copied.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   StackUtils<T>::StackUtils(const StackUtils<T> &original) {
+       stack_size = original.stack_size;
+       top = original.top;
+       count = original.count;
+       stack = new T[stack_size]; /* allocate memory for the new stack */
+       for (int i = 0; i <= stack_size; i++)
+           stack[i] = original.stack[i];
+   }
+   ```
+  </details>
+
+  <details>
+    <summary><i>push</i></summary>
+    
+   ### void StackUtils<T>::push(T data)
+   - Purpose: Pushes a new element onto the stack.
+   - Inputs: The new element to be pushed.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   void StackUtils<T>::push(T data) {
+       if (stackIsFull()) {
+           cout << "Stack is full\n";
+       }
+       else {
+           /* we must ++ before assigning because top is -1 at the beginning */
+           stack[++top] = data;
+           count++;
+       }
+   }
+   ```
+  </details>
+
+  <details>
+    <summary><i>pop</i></summary>
+    
+   ### void StackUtils<T>::pop(T &data)
+   - Purpose: Pops an element from the stack.
+   - Inputs: Reference to store the popped element.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   void StackUtils<T>::pop(T &data) {
+       if (stackIsEmpty()) {
+           cout << "Stack is empty\n";
+       }
+       else {
+           data = stack[top--];
+           count--;
+       }
+   }
+   ```
+  </details>
+
+  <details>
+    <summary><i>stackTop</i></summary>
+    
+   ### void StackUtils<T>::stackTop(T &data) const
+   - Purpose: Retrieves the top element of the stack without removing it.
+   - Inputs: Reference to store the top element.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   void StackUtils<T>::stackTop(T &data) const {
+       if (stackIsEmpty())
+           cout << "Stack Underflow";
+       else
+           data = stack[top];
+   }
+   ```
+  </details>
+
+   <details>
+    <summary><i>stackIsEmpty</i></summary>
+    
+   ### bool StackUtils<T>::stackIsEmpty() const
+   - Purpose: Checks if the stack is empty.
+   - Inputs:  None.
+   - Outputs: Boolean indicating if the stack is empty.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   bool StackUtils<T>::stackIsEmpty() const {
+       return top < 0; // or return (top == -1);
+   }
+   ```
+  </details>
+
+   <details>
+    <summary><i>stackIsFull</i></summary>
+    
+   ### bool StackUtils<T>::stackIsFull() const
+   - Purpose: Checks if the stack is full.
+   - Inputs:  None.
+   - Outputs: Boolean indicating if the stack is full.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   bool StackUtils<T>::stackIsFull() const {
+       return (top >= (stack_size - 1)); // or return (top == stack_size - 1);
+   }
+   ```
+  </details>
+
+   <details>
+    <summary><i>stackSize</i></summary>
+    
+   ### int StackUtils<T>::stackSize()
+   - Purpose: Retrieves the size of the stack (number of elements).
+   - Inputs:  None.
+   - Outputs: Integer representing the size of the stack.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   int StackUtils<T>::stackSize() {
+       return count;
+   }
+   ```
+  </details>
+
+  <details>
+    <summary><i>Destructor</i></summary>
+    
+   ### StackUtils<T>::~StackUtils()
+   - Purpose: Destructor to delete the stack from memory after program execution.
+   - Inputs:  None.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   StackUtils<T>::~StackUtils() {
+       delete [] stack;
+   }
+   ```
+  </details>
+   
+</details>
 
 
 
