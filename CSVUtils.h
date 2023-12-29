@@ -11,6 +11,7 @@
 const int MAX_ROWS = 20;
 const int USER_MAX_COLS = 3; // username, password, job_title
 const int BOOK_MAX_COLS = 9; // name, category, price, author
+const int SOLD_MAX_COLS = 5; // name, soldBy, price, qty,author
 
 template<size_t MAX_COLS>
 void writeCSV(const std::string&filename, const std::string data[][MAX_COLS], int rowCount, int colCount);
