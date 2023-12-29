@@ -69,3 +69,24 @@ void QueueUtils<T>::display() const {
     }
     std::cout << queue[rear] << std::endl;
 }
+
+template <typename T>
+T QueueUtils<T>::getMax() {
+    if (isEmpty()) {
+        throw std::runtime_error("Queue is empty");
+    }
+
+    T maxElement = queue[front];
+    for (int i = front; i != rear; i = (i + 1) % size) {
+        if (queue[i] > maxElement) {
+            maxElement = queue[i];
+        }
+    }
+
+    // Check the rear element
+    if (queue[rear] > maxElement) {
+        maxElement = queue[rear];
+    }
+
+    return maxElement;
+}

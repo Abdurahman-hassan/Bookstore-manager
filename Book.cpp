@@ -224,8 +224,10 @@ void Book::displayUser() {
         "3) Advanced Search\n"
         "4) My Purchases (Asc)\n"
         "5) My Purchases (Desc)\n"
+        "6) Get Max Book price \n"
+        "7) Get Min Book price \n"
         // "5) Rate and Review Books\n"
-        "6) Logout\n");
+        "8) Logout\n");
 
     switch (choice) {
         case 1: userSearchBook();
@@ -240,9 +242,15 @@ void Book::displayUser() {
         case 5:
             myPurchasesDescending();
             break;
+        case 6:
+            displayMaxPrice();
+            break;
+        case 7:
+            displayMinPrice();
+            break;
         // case 5: rateAndReviewBooks();
         //     break;
-        case 6: logout();
+        case 8: logout();
             break;
         default: cout << "Invalid choice\n";
             break;
@@ -794,6 +802,49 @@ void Book::sortAscending(QueueUtils<BookData>& queue) {
     nodeList.makeListEmpty();
 }
 
+float Book::getMinPrice() {
+    if (book_node.isEmpty()) {
+        throw std::runtime_error("No books available");
+    }
+
+    StackUtils<float> priceStack;
+    book_node.toFirst();
+    BookData data;
+
+    while (!book_node.currsorIsEmpty()) {
+        book_node.retrieveData(data);
+        priceStack.push(data.price);
+        book_node.advance();
+    }
+
+    return priceStack.getMin();
+}
+
+float Book::getMaxPrice() {
+    if (book_node.isEmpty()) {
+        throw std::runtime_error("No books available");
+    }
+
+    QueueUtils<float> priceQueue;
+    book_node.toFirst();
+    BookData data;
+
+    while (!book_node.currsorIsEmpty()) {
+        book_node.retrieveData(data);
+        priceQueue.enqueue(data.price);
+        book_node.advance();
+    }
+
+    return priceQueue.getMax();
+}
+
+void Book::displayMaxPrice() {
+    cout << "Max Price: " << getMaxPrice() << endl;
+}
+
+void Book::displayMinPrice() {
+    cout << "Min Price: " << getMinPrice() << endl;
+}
 
 //
 // void Book::rateAndReviewBooks() {

@@ -23,6 +23,7 @@ public:
     bool isEmpty() const;
     bool isFull() const;
     void display() const;
+    T getMax();
 };
 
 #include "QueueUtils.tpp" // Including implementation

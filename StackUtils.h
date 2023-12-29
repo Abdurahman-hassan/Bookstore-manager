@@ -25,6 +25,7 @@ public:
     void sorting_stack(StackUtils<T>&); /* sorting the stack */
     void sorting_stack(); /* sorting the stack */
     void printStack(StackUtils<T>&stack, const std::string&message);
+    T getMin();
 
 private:
     T* stack; /* pointer to dynamic array */
