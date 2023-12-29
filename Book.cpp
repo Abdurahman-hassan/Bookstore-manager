@@ -101,7 +101,7 @@ void Book::update(const string&name, const string&category, const float&price,
     saveToCSV("database/books_database.csv");
 }
 
-void Book::reserveBook(int key) {
+void Book::soldBook(int key) {
     if (!book_node.search(key)) {
         cout << "Book not found." << endl;
         return;
@@ -222,9 +222,10 @@ void Book::displayUser() {
         "1) Book Search\n"
         "2) Display All Books\n"
         "3) Advanced Search\n"
-        "4) My Sold\n"
+        "4) My Purchases (Asc)\n"
+        "5) My Purchases (Desc)\n"
         // "5) Rate and Review Books\n"
-        "5) Logout\n");
+        "6) Logout\n");
 
     switch (choice) {
         case 1: userSearchBook();
@@ -234,11 +235,14 @@ void Book::displayUser() {
         case 3: advancedSearch();
             break;
         case 4:
-            myReservation();
+            myPurchasesAscending();
+            break;
+        case 5:
+            myPurchasesDescending();
             break;
         // case 5: rateAndReviewBooks();
         //     break;
-        case 5: logout();
+        case 6: logout();
             break;
         default: cout << "Invalid choice\n";
             break;
@@ -327,7 +331,7 @@ void Book::displayDetailsUser(BookData&data) {
 
     switch (choice) {
         case 1:
-            reserveBook(data);
+            soldBook(data);
             break;
         case 2:
             break; // Return to previous menu
@@ -337,7 +341,7 @@ void Book::displayDetailsUser(BookData&data) {
 }
 
 
-void Book::reserveBook(BookData& data) {
+void Book::soldBook(BookData& data) {
     if (data.qty <=0) {
         cout << "This book is out of stock." << endl;
         return;
@@ -371,7 +375,7 @@ void Book::printAll() {
         book_node.retrieveKey(key);
         book_node.retrieveData(data);
         cout << bookNumber << ") Book Name: " << data.name;
-        if (username == "admin" && data.qty<=0) {
+        if (data.qty<=0) {
             cout << " (Out of Stock)";
         }
         cout << endl;
@@ -412,7 +416,7 @@ void Book::promptForBookAction() {
     }
 }
 
-void Book::myReservation() {
+void Book::myPurchasesAscending() {
     if (book_node.isEmpty()) {
         cout << "There are no books sold available" << endl;
         return;
@@ -422,7 +426,21 @@ void Book::myReservation() {
         cout << "You don't have any solds" << endl;
     }
     else {
-        sold_node.mySold(username);
+        sold_node.displayAscending(username);
+    }
+}
+
+void Book::myPurchasesDescending() {
+    if (book_node.isEmpty()) {
+        cout << "There are no books sold available" << endl;
+        return;
+    }
+
+    if (!sold_node.checkHasSold(username)) {
+        cout << "You don't have any solds" << endl;
+    }
+    else {
+        sold_node.displayDescending(username);
     }
 }
 
@@ -690,6 +708,92 @@ void Book::reportReservedBooks() {
 
     cout << "Total reserved books: " << reservedCount << endl;
 }
+
+
+
+void Book::displayDescending() {
+    StackUtils<BookData> stack;
+    sortDescending(stack);
+
+    BookData data;
+    while (!stack.stackIsEmpty())
+    {
+        stack.pop(data);
+        cout << "\nBook Name: " << data.name << endl
+            << "Author: " << data.author << endl
+            << "Price: " << data.price << endl
+            << "Qty: " << data.qty << endl
+            << "Total: " << (data.qty * data.price) << endl;
+
+        cout << "-----------------------------------------\n";
+    }
+}
+
+void Book::displayAscending() {
+    QueueUtils<BookData> queue;
+    sortAscending(queue);
+    BookData data;
+    while (!queue.isEmpty())
+    {
+        data = queue.dequeue();
+        cout << "\nBook Name: " << data.name << endl
+            << "Author: " << data.author << endl
+            << "Price: " << data.price << endl
+            << "Qty: " << data.qty << endl
+            << "Total: " << (data.qty * data.price) << endl;
+
+        cout << "-----------------------------------------\n";
+    }
+
+}
+
+
+void Book::sortDescending(StackUtils<BookData>& stack) {
+    LinkedListUtils<BookData> nodeList;
+    BookData data;
+    book_node.toFirst();
+    while (!book_node.currsorIsEmpty())
+    {
+        book_node.retrieveData(data);
+        nodeList.orderInsert(data.qty, data);
+        book_node.advance();
+    }
+
+    nodeList.toFirst();
+    while (!nodeList.currsorIsEmpty())
+    {
+        nodeList.retrieveData(data);
+        stack.push(data);
+        nodeList.advance();
+    }
+
+    nodeList.makeListEmpty();
+
+}
+
+
+void Book::sortAscending(QueueUtils<BookData>& queue) {
+    LinkedListUtils<BookData> nodeList;
+    BookData data;
+    book_node.toFirst();
+    while (!book_node.currsorIsEmpty())
+    {
+        book_node.retrieveData(data);
+        nodeList.orderInsert(data.qty, data);
+        book_node.advance();
+    }
+
+    nodeList.toFirst();
+    while (!nodeList.currsorIsEmpty())
+    {
+        nodeList.retrieveData(data);
+        queue.enqueue(data);
+        nodeList.advance();
+    }
+
+    nodeList.makeListEmpty();
+}
+
 
 //
 // void Book::rateAndReviewBooks() {

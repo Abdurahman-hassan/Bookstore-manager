@@ -43,14 +43,15 @@ public:
 	void editBook(BookData &data, int key);
 	void deleteBook(int key);
 	void displayDetailsUser(BookData&);
-	void reserveBook(int bookNumber);
-	void reserveBook(BookData &data);
+	void soldBook(int bookNumber);
+	void soldBook(BookData &data);
 	bool serach(int&);
 	bool serach(const string&);
 	int size();
 	void printAll();
 	void promptForBookAction();
-	void myReservation();
+	void myPurchasesAscending();
+	void myPurchasesDescending();
 	void printData(const BookData& data);
 	void saveToCSV(const string& filename);
 	void loadFromCSV(const string& filename);
@@ -58,6 +59,10 @@ public:
 	void reloadBookCollection();
 	void advancedSearch();
 	void generateReports();
+	void displayDescending();
+	void displayAscending();
+	void sortDescending(StackUtils<BookData>& stack);
+	void sortAscending(QueueUtils<BookData>& queue);
 
 	// void rateAndReviewBooks();
 	// void displayBookRatingAndReviews(int bookKey);
@@ -71,7 +76,7 @@ private:
 	BookSold sold_node;
 	string username;
 	string visitorName;
-	int defaultQty = 15;
+	int defaultQty = 10;
 
 	// ================== Advanced Search Functions ==================
 	void searchByAuthor();
