@@ -797,8 +797,218 @@ CS505 Bookstore Manager Project  Data Structures &amp; Algorithms project from t
 
 
 
+[//]: # (Queue Functions)
 
 
+<details>
+  <summary><h3><b>Queue Functions</b></h3></summary>
+   
+  <details>
+    <summary><i>Constructor</i></summary>
+    
+   ### QueueUtils<T>::QueueUtils(int size) 
+   - Purpose: Constructor for QueueUtils class.
+   - Inputs: Size of the queue.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+    template <typename T>
+    QueueUtils<T>::QueueUtils(int size) {
+        this->size = size;
+        queue = new T[size];
+        front = 0;
+        rear = -1;
+        count = 0;
+    }
+   ```
+  </details>
+
+   <details>
+    <summary><i>Destructor</i></summary>
+    
+   ### QueueUtils<T>::~QueueUtils()
+   - Purpose: Destructor for QueueUtils class.
+   - Inputs: None.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+     template <typename T>
+     QueueUtils<T>::~QueueUtils() {
+         delete[] queue;
+     }
+   ```
+  </details>
+
+   <details>
+    <summary><i>Copy constructor</i></summary>
+    
+   ### QueueUtils<T>::QueueUtils(const QueueUtils<T> &q)
+   - Purpose: Copy constructor for QueueUtils class.
+   - Inputs: Another QueueUtils object.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+       template <typename T>
+       QueueUtils<T>::QueueUtils(const QueueUtils<T> &q) {
+           size = q.size;
+           queue = new T[size];
+           front = q.front;
+           rear = q.rear;
+           count = q.count;
+           for (int i = 0; i < size; i++) {
+               queue[i] = q.queue[i];
+           }
+       }
+   ```
+  </details>
+
+  <details>
+    <summary><i>enqueue</i></summary>
+    
+   ### void QueueUtils<T>::enqueue(T item)
+   - Purpose: Adds an element to the queue.
+   - Inputs: Element to be added.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+       template <typename T>
+       void QueueUtils<T>::enqueue(T item) {
+           if (isFull()) {
+               std::cout << "Queue is full" << std::endl;
+               return;
+           }
+           rear = (rear + 1) % size;
+           queue[rear] = item;
+           count++;
+       }
+   ```
+  </details>
+
+  <details>
+    <summary><i>dequeue</i></summary>
+    
+   ### T QueueUtils<T>::dequeue()
+   - Purpose: Removes and returns the element from the front of the queue.
+   - Inputs: None.
+   - Outputs: Element removed from the queue (default value if empty).
+
+   ### Implementation
+   ```C++
+       template <typename T>
+       T QueueUtils<T>::dequeue() {
+           if (isEmpty()) {
+               std::cout << "Queue is empty" << std::endl;
+               return T(); // Return default value of T
+           }
+           T item = queue[front];
+           front = (front + 1) % size;
+           count--;
+           return item;
+       }
+   ```
+  </details>
+
+   <details>
+    <summary><i>isEmpty</i></summary>
+    
+   ### bool QueueUtils<T>::isEmpty() const
+   - Purpose: Checks if the queue is empty.
+   - Inputs: None.
+   - Outputs: Boolean indicating if the queue is empty.
+
+   ### Implementation
+   ```C++
+          template <typename T>
+          bool QueueUtils<T>::isEmpty() const {
+              return count == 0;
+          }
+   ```
+  </details>
+
+   <details>
+    <summary><i>isFull</i></summary>
+    
+   ### bool QueueUtils<T>::isFull() const
+   - Purpose: Checks if the queue is full.
+   - Inputs: None.
+   - Outputs: Boolean indicating if the queue is full.
+
+   ### Implementation
+   ```C++
+       template <typename T>
+       bool QueueUtils<T>::isFull() const {
+           return count == size;
+       }
+   ```
+  </details>
+
+  <details>
+    <summary><i>display</i></summary>
+    
+   ### void QueueUtils<T>::display() const
+   - Purpose: Displays the elements in the queue.
+   - Inputs: None.
+   - Outputs: None (prints queue elements if not empty).
+
+   ### Implementation
+   ```C++
+       template <typename T>
+       void QueueUtils<T>::display() const {
+           if (isEmpty()) {
+               std::cout << "Queue is empty" << std::endl;
+               return;
+           }
+           std::cout << "Queue: ";
+           for (int i = front; i != rear; i = (i + 1) % size) {
+               std::cout << queue[i] << " ";
+           }
+           std::cout << queue[rear] << std::endl;
+       }
+   ```
+  </details>
+
+
+ <details>
+    <summary><i>getMax</i></summary>
+    
+   ### T QueueUtils<T>::getMax()
+   - Purpose: Retrieves the maximum element in the queue.
+   - Inputs: None.
+   - Outputs: The maximum element in the queue.
+
+   ### Implementation
+   ```C++
+       template <typename T>
+       T QueueUtils<T>::getMax() {
+           if (isEmpty()) {
+               throw std::runtime_error("Queue is empty");
+           }
+      
+           T maxElement = queue[front];
+           for (int i = front; i != rear; i = (i + 1) % size) {
+               if (queue[i] > maxElement) {
+                   maxElement = queue[i];
+               }
+           }
+      
+           // Check the rear element
+           if (queue[rear] > maxElement) {
+               maxElement = queue[rear];
+           }
+      
+           return maxElement;
+       }
+   ```
+  </details>
+
+
+  
+   
+</details>
 
 
 
