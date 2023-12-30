@@ -37,7 +37,8 @@ CS505 Bookstore Manager Project  Data Structures &amp; Algorithms project from t
         - Stack: Use for undo operations in admin interface or for history tracking.
         - Queue: Handle user requests or book purchases in an orderly fashion.
         - Tree (Binary Search Tree or AVL Tree): Manage book records efficiently, facilitating faster searches.
-        - Hash Table: Store and retrieve user credentials rapidly, ensuring quick login and registration processes.
+
+[//]: # (Hash Table: Store and retrieve user credentials rapidly, ensuring quick login and registration processes.)
     
 ### 3. Functional Documentation of Project Components
 
