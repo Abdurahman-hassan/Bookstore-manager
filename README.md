@@ -789,6 +789,150 @@ CS505 Bookstore Manager Project  Data Structures &amp; Algorithms project from t
    }
    ```
   </details>
+
+  <details>
+    <summary><i>sorting_stack</i></summary>
+    
+   ### void StackUtils<T>::sorting_stack(StackUtils<T> &s)
+   - Purpose: Sorts the elements of the provided stack in descending order.
+   - Inputs: Reference to a stack to be sorted.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+    void StackUtils<T>::sorting_stack(StackUtils<T> &s) {
+        int size = s.stackSize();
+        T *array = new T[size]; // Array to hold stack elements
+        int arraySize = 0;
+   
+        // Transfer elements from stack 's' to array
+        while (!s.stackIsEmpty()) {
+            T temp;
+            s.pop(temp);
+            array[arraySize++] = temp;
+        }
+   
+        // Sorting using a Bubble Sort algorithm
+        for (int i = 0; i < arraySize - 1; i++) {
+            for (int j = 0; j < arraySize - i - 1; j++) {
+                if (array[j] < array[j + 1]) {
+                    // Swap array[j] and array[j + 1]
+                    T temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+        }
+   
+        // Push sorted elements back to stack 's'
+        for (int i = 0; i < arraySize; i++) {
+            s.push(array[i]);
+        }
+   
+        delete[] array; // Clean up the dynamically allocated array
+    }
+   ```
+  </details>
+
+
+  <details>
+    <summary><i>sorting_stack</i></summary>
+    
+   ### void StackUtils<T>::sorting_stack()
+   - Purpose: Sorts the elements of the stack in ascending order using a Bubble Sort algorithm.
+   - Inputs: None.
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+    template <typename T>
+    void StackUtils<T>::sorting_stack() {
+        T *array = new T[count]; // Array to hold stack elements
+        int arraySize = 0;
+   
+        // Transfer elements from stack to array
+        while (!stackIsEmpty()) {
+            pop(array[arraySize++]);
+        }
+   
+        // Bubble Sort algorithm
+        for (int i = 0; i < arraySize - 1; i++) {
+            for (int j = 0; j < arraySize - i - 1; j++) {
+                if (array[j] > array[j + 1]) {
+                    // Swap array[j] and array[j + 1]
+                    T temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+        }
+   
+        // Push sorted elements back to stack
+        for (int i = 0; i < arraySize; i++) {
+            push(array[i]);
+        }
+   
+        delete[] array; // Clean up the dynamically allocated array
+    }
+   ```
+  </details>
+
+   <details>
+    <summary><i>printStack</i></summary>
+    
+   ### void StackUtils<T>::printStack(StackUtils<T>& stack, const string& message)
+   - Purpose: Prints the elements of the provided stack along with a message.
+   - Inputs:  
+      - stack: Reference to the stack whose elements need to be printed.
+      - message: Message to be displayed before printing the elements. 
+   - Outputs: None.
+
+   ### Implementation
+   ```C++
+    template <typename T>
+    void StackUtils<T>::printStack(StackUtils<T>& stack, const string& message) {
+        cout << message << endl;
+        StackUtils<T> tempStack(stack);
+   
+        while (!tempStack.stackIsEmpty()) {
+            T element;
+            tempStack.pop(element);
+            cout << element << "  ";
+        }
+        cout << endl;
+    }
+   ```
+  </details>
+
+  <details>
+    <summary><i>getMin</i></summary>
+    
+   ### T StackUtils<T>::getMin()
+   - Purpose: Retrieves the minimum element in the stack.
+   - Inputs: None.
+   - Outputs: The minimum element in the stack.
+
+   ### Implementation
+   ```C++
+    template <typename T>
+    T StackUtils<T>::getMin() {
+        if (stackIsEmpty()) {
+            throw std::runtime_error("Stack is empty");
+        }
+   
+        T minElement = stack[top];
+        for (int i = 0; i <= top; i++) {
+            if (stack[i] < minElement) {
+                minElement = stack[i];
+            }
+        }
+   
+        return minElement;
+    }
+   ```
+  </details>
+  
    
 </details>
 
