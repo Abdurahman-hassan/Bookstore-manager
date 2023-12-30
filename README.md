@@ -1295,6 +1295,46 @@ CS505 Bookstore Manager Project  Data Structures &amp; Algorithms project from t
 </details>
 
 
+[//]: # (Input Utilities Functions)
+
+
+<details>
+  <summary><h3><b>Input Utilities Functions</b></h3></summary>
+   
+  <details>
+    <summary><i>getValidNumber</i></summary>
+    
+   ### T getValidNumber(const string& prompt)
+   - Purpose: Prompts the user for input until a valid number of type T is entered.
+   - Inputs: A prompt message to display to the user.
+   - Outputs: The valid number of type T entered by the user.
+
+   ### Implementation
+   ```C++
+   template <typename T>
+   T getValidNumber(const string& prompt) {
+       T number;
+       string input;
+       bool isValid = false;
+   
+       while (!isValid) {
+           cout << prompt;
+           getline(cin, input);
+           stringstream ss(input);
+   
+           if (ss >> number && !(ss >> input)) { // Check if input is a number and nothing follows
+               isValid = true;
+           } else {
+               cout << "Invalid input. Please enter a valid number.\n";
+           }
+       }
+       return number;
+   }
+   ```
+  </details>
+
+   
+</details>
 
 
 
